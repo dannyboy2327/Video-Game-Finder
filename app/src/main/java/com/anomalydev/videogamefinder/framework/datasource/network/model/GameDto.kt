@@ -17,7 +17,7 @@ data class GameDto(
     var image: String,
 
     @SerializedName("rating")
-    var rating: Int,
+    var rating: Float,
 
     @SerializedName("rating_top")
     var ratingTop: Int,
