@@ -1,6 +1,5 @@
 package com.anomalydev.videogamefinder.framework.datasource.network.abstraction
 
-import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 import com.anomalydev.videogamefinder.framework.datasource.network.response.GameSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
