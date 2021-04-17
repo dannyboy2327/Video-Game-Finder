@@ -13,13 +13,7 @@ interface GameService {
         @Header("x-rapidapi-key") key: String,
         @Header("x-rapidapi-host") host: String,
         @Query("page") page: Int,
-        @Query("name") query: String
+        @Query("page_size") pageSize: Int,
+        @Query("search") searchQuery: String
     ): GameSearchResponse
-
-    @GET("games")
-    suspend fun getGame(
-        @Header("x-rapidapi-key") key: String,
-        @Header("x-rapidapi-host") host: String,
-        @Query("id") id: Int
-    ): GameDto
 }
