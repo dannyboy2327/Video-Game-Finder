@@ -21,7 +21,7 @@ data class GameEntity(
     var imageUrl: String,
 
     @ColumnInfo(name = "rating")
-    var rating: Int,
+    var rating: Float,
 
     @ColumnInfo(name = "rating_top")
     var rating_top: Int,
