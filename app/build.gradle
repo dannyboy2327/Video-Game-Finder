@@ -65,6 +65,9 @@ dependencies {
     // Compose Nav
     implementation "androidx.navigation:navigation-compose:1.0.0-alpha10"
 
+    // Compose Hilt Nav
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-alpha01'
+
     // Room
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"

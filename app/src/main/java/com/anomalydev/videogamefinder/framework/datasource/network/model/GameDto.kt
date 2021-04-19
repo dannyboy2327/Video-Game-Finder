@@ -11,10 +11,10 @@ data class GameDto(
     var name: String,
 
     @SerializedName("released")
-    var released: String,
+    var released: String?,
 
     @SerializedName("background_image")
-    var image: String,
+    var image: String?,
 
     @SerializedName("rating")
     var rating: Float,

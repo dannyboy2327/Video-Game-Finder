@@ -11,8 +11,8 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
         return Game(
             id = model.id,
             name = model.name,
-            released = model.released,
-            imageUrl = model.image,
+            released = model.released?: "Unknown",
+            imageUrl = model.image?: "",
             rating = model.rating,
             rating_top = model.ratingTop,
             updated = DateUtil.removeTimeFromDateString(model.updated)
