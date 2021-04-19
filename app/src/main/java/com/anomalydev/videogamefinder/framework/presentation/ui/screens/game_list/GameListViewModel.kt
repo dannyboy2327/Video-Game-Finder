@@ -59,6 +59,7 @@ class GameListViewModel @Inject constructor(
 
     // 1st Use Case
     private suspend fun newGameSearch() {
+        loading.value = true
         val result = gameService.searchGames(
             key = key,
             page = 1,
@@ -66,6 +67,7 @@ class GameListViewModel @Inject constructor(
             searchQuery = "Sonic"
         )
         games.value = dtoMapper.dtoToModelList(result.games)
+        loading.value = false
     }
 
     // 2nd Use Case
