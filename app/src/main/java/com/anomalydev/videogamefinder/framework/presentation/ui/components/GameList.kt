@@ -9,7 +9,8 @@ import com.anomalydev.videogamefinder.business.domain.model.Game
 @Composable
 fun GameList(
     games: List<Game>,
-    loading: Boolean
+    loading: Boolean,
+    onScrollPositionChanged: (Int) -> Unit
 ) {
     Box {
         CircularLoadingBar(isDisplayed = loading)
@@ -17,6 +18,8 @@ fun GameList(
             itemsIndexed(
                 items = games,
             ) { index, game ->
+
+                onScrollPositionChanged(index)
 
                 GameCard(
                     game = game

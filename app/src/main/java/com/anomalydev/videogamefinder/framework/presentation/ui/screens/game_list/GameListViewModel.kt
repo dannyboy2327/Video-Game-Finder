@@ -23,19 +23,35 @@ class GameListViewModel @Inject constructor(
     @Named("auth_key") private val key: String,
 ): ViewModel() {
 
+    // Used to receive the list of games
     val games: MutableState<List<Game>> = mutableStateOf(ArrayList())
 
+    // Used to set loading state of the app
     val loading: MutableState<Boolean> = mutableStateOf(false)
 
+    // Used to search for new query or restore query
+    val query: MutableState<String> = mutableStateOf("")
+
+    // Used to append new list of games or restore page num
+    val page: MutableState<Int> = mutableStateOf(1)
+
+    // Used to restore gameListPosition num
+    var gameListScrollPosition = 0
+
     init {
-        onTriggerEvent(GameListEvents.SearchGamesEvent)
+        // If position restored is not 0, scroll to that restored position
+        if (gameListScrollPosition != 0) {
+
+        } else {
+            onTriggerEvent(GameListEvents.SearchGamesEvent)
+        }
     }
 
 
     /**
      *  This function will trigger an event for GameListScreen
      */
-    private fun onTriggerEvent(event: GameListEvents) {
+    fun onTriggerEvent(event: GameListEvents) {
         viewModelScope.launch {
             try {
                 when (event) {
@@ -44,12 +60,13 @@ class GameListViewModel @Inject constructor(
                     }
 
                     is GameListEvents.SearchNextPageEvent -> {
-                        newSearchPage()
+                        nextSearchPage()
                     }
 
                     is GameListEvents.RestoreStateEvent -> {
                         restoreState()
                     }
+                    else -> { }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "onTriggerEvent: $e, ${e.cause}")
@@ -59,25 +76,49 @@ class GameListViewModel @Inject constructor(
 
     // 1st Use Case
     private suspend fun newGameSearch() {
+
         loading.value = true
         val result = gameService.searchGames(
             key = key,
-            page = 1,
+            page = page.value,
             pageSize = Constants.PAGE_SIZE,
-            searchQuery = "Sonic"
+            searchQuery = query.value,
         )
         games.value = dtoMapper.dtoToModelList(result.games)
         loading.value = false
     }
 
     // 2nd Use Case
-    private fun newSearchPage() {
+    private fun nextSearchPage() {
 
     }
 
     // 3rd Use Case
     private fun restoreState() {
 
+    }
+
+    /**
+     *  Responsible for calling function to set new query
+     */
+    fun onQueryChanged(query: String) {
+        setQuery(query)
+    }
+
+    /**
+     *  Will set the new query value
+     */
+    private fun setQuery(query: String) {
+        this.query.value = query
+    }
+
+    fun onChangeGameListPosition(position: Int) {
+        setNewPosition(position)
+    }
+
+    private fun setNewPosition(position: Int) {
+        this.gameListScrollPosition = position
+        Log.d(TAG, "setNewPosition: $gameListScrollPosition")
     }
 
 }
