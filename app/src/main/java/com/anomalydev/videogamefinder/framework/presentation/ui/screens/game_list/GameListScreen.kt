@@ -27,6 +27,8 @@ fun GameListScreen(
 
     val games = viewModel.games.value
 
+    val loading = viewModel.loading.value
+
     GameList(
         games = games,
     )

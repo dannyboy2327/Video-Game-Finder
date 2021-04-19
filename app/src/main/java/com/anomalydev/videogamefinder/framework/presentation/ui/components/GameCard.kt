@@ -60,27 +60,10 @@ fun GameCard(
                 Text(
                     text = game.name,
                     modifier = Modifier
-                        .fillMaxWidth(0.70f)
-                        .wrapContentWidth(Alignment.Start),
+                        .fillMaxWidth(),
                     style = MaterialTheme.typography.h5,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = "Rating: ",
-                    modifier = Modifier
-                        .align(CenterVertically),
-                    style = MaterialTheme.typography.h6
-                )
-
-                Text(
-                    text = game.rating.toString(),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.End)
-                        .align(CenterVertically),
-                    style = MaterialTheme.typography.h6,
                 )
             }
         }
