@@ -31,5 +31,6 @@ fun GameListScreen(
 
     GameList(
         games = games,
+        loading = loading
     )
 }
