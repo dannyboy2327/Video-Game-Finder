@@ -3,12 +3,14 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_li
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.ViewModelConstants
 import com.anomalydev.videogamefinder.util.Constants
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,7 @@ class GameListViewModel @Inject constructor(
     private val gameService: GameService,
     private val dtoMapper: GameDtoMapper,
     @Named("auth_key") private val key: String,
+    private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
     // Used to receive the list of games
@@ -41,9 +44,25 @@ class GameListViewModel @Inject constructor(
     var gameListScrollPosition = 0
 
     init {
+
+        // Will restore the page num if not null
+        savedStateHandle.get<Int>(ViewModelConstants.PAGE_KEY)?.let { page ->
+            setPageNum(page)
+        }
+
+        // Will restore the query if not null
+        savedStateHandle.get<String>(ViewModelConstants.QUERY_KEY)?.let { query ->
+            setQuery(query)
+        }
+
+        // Will restore the scroll position if not null
+        savedStateHandle.get<Int>(ViewModelConstants.SCROLL_POSITION)?.let {  position ->
+            setNewPosition(position)
+        }
+
         // If position restored is not 0, scroll to that restored position
         if (gameListScrollPosition != 0) {
-
+            onTriggerEvent(GameListEvents.RestoreStateEvent)
         } else {
             onTriggerEvent(GameListEvents.SearchGamesEvent)
         }
@@ -115,8 +134,22 @@ class GameListViewModel @Inject constructor(
     }
 
     // 3rd Use Case
-    private fun restoreState() {
-
+    private suspend fun restoreState() {
+        loading.value = true
+        val results: MutableList<Game> = mutableListOf()
+        for (pageNum in 1..page.value) {
+            val result = gameService.searchGames(
+                key = key,
+                page = page.value,
+                pageSize = Constants.PAGE_SIZE,
+                searchQuery = query.value,
+            )
+            results.addAll(dtoMapper.dtoToModelList(result.games))
+            if (pageNum == page.value) {
+                games.value = results
+                loading.value = false
+            }
+        }
     }
 
     /**
@@ -131,6 +164,7 @@ class GameListViewModel @Inject constructor(
      */
     private fun setQuery(query: String) {
         this.query.value = query
+        savedStateHandle.set(ViewModelConstants.QUERY_KEY, this.query.value)
     }
 
     /**
@@ -144,14 +178,15 @@ class GameListViewModel @Inject constructor(
      *  Will set the new scroll position
      */
     private fun setNewPosition(position: Int) {
-        this.gameListScrollPosition = position
+        gameListScrollPosition = position
         Log.d(TAG, "setNewPosition: $gameListScrollPosition")
+        savedStateHandle.set(ViewModelConstants.SCROLL_POSITION, gameListScrollPosition)
     }
 
     /**
      *  Responsible for incrementing page number
      */
-    fun incrementPageNum() {
+    private fun incrementPageNum() {
         setPageNum(page.value + 1)
     }
 
@@ -159,16 +194,17 @@ class GameListViewModel @Inject constructor(
      *  Will set the new page number
      */
     private fun setPageNum(pageNum: Int) {
-        this.page.value = pageNum
+        page.value = pageNum
+        savedStateHandle.set(ViewModelConstants.PAGE_KEY, page.value)
     }
 
     /**
      *  Responsible for appending new list of games
      */
     private fun appendListOfGames(result: List<Game>) {
-        val currentList = ArrayList(this.games.value)
+        val currentList = ArrayList(games.value)
         currentList.addAll(result)
-        this.games.value = currentList
+        games.value = currentList
     }
 
 }
