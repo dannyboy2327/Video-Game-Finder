@@ -3,6 +3,8 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_de
 import androidx.compose.runtime.Composable
 
 @Composable
-fun GameDetailsScreen() {
+fun GameDetailsScreen(
+    gameId: Int?,
+) {
 
 }
