@@ -7,9 +7,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.GameDetailsScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListScreen
@@ -36,11 +35,17 @@ class MainActivity : ComponentActivity() {
                     val gameListViewModel: GameListViewModel = viewModel("GameListViewModel", factory)
                     GameListScreen(
                         viewModel = gameListViewModel,
+                        onNavigateToGameDetailScreen = navController::navigate,
                     )
                 }
 
-                composable("gameDetails") {
-                    GameDetailsScreen()
+                composable(
+                    "gameDetails/{gameId}",
+                    arguments = listOf(navArgument("gameId") { type = NavType.IntType})
+                ) { navBackStackEntry ->
+                    GameDetailsScreen(
+                        gameId = navBackStackEntry.arguments?.getInt("gameId"),
+                    )
                 }
             }
         }
