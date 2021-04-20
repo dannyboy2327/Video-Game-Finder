@@ -1,11 +1,14 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 import com.anomalydev.videogamefinder.util.Constants
+import com.anomalydev.videogamefinder.util.Constants.TAG
 
 @Composable
 fun GameList(
@@ -14,6 +17,7 @@ fun GameList(
     page: Int,
     onScrollPositionChanged: (Int) -> Unit,
     onTriggerNextPage: () -> Unit,
+    onNavigateToGameDetailScreen: (String) -> Unit,
 ) {
     Box {
         if (games.isEmpty()) {
@@ -31,10 +35,13 @@ fun GameList(
                     }
 
                     GameCard(
-                        game = game
-                    ) {
-                        // On click navigate
-                    }
+                        game = game,
+                        onClick = {
+                            val route = Screen.GameDetails.route + "/${game.id}"
+                            onNavigateToGameDetailScreen(route)
+                            Log.d(TAG, "GameList: Game id: ${game.id}")
+                        }
+                    )
                 }
             }
         }
