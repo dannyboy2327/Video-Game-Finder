@@ -12,8 +12,9 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Searc
 @ExperimentalComposeUiApi
 @Composable
 fun GameListScreen(
-    viewModel: GameListViewModel
-) {
+    viewModel: GameListViewModel,
+    onNavigateToGameDetailScreen: (String) -> Unit,
+    ) {
 
     val games = viewModel.games.value
 
@@ -42,6 +43,7 @@ fun GameListScreen(
             onTriggerNextPage = {
                 viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
             },
+            onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
         )
     }
 }
