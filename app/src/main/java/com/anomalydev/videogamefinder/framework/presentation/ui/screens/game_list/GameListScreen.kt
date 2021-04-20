@@ -21,6 +21,8 @@ fun GameListScreen(
 
     val query = viewModel.query.value
 
+    val page = viewModel.page.value
+
     Scaffold(
         topBar = {
             SearchBar(
@@ -35,7 +37,11 @@ fun GameListScreen(
         GameList(
             games = games,
             loading = loading,
-            onScrollPositionChanged = viewModel::onChangeGameListPosition
+            page = page,
+            onScrollPositionChanged = viewModel::onChangeGameListPosition,
+            onTriggerNextPage = {
+                viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
+            },
         )
     }
 }

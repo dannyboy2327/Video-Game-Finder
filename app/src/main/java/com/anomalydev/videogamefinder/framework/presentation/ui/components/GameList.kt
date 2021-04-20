@@ -5,28 +5,39 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.util.Constants
 
 @Composable
 fun GameList(
     games: List<Game>,
     loading: Boolean,
-    onScrollPositionChanged: (Int) -> Unit
+    page: Int,
+    onScrollPositionChanged: (Int) -> Unit,
+    onTriggerNextPage: () -> Unit,
 ) {
     Box {
-        CircularLoadingBar(isDisplayed = loading)
-        LazyColumn {
-            itemsIndexed(
-                items = games,
-            ) { index, game ->
+        if (games.isEmpty()) {
 
-                onScrollPositionChanged(index)
+        } else {
+            LazyColumn {
+                itemsIndexed(
+                    items = games,
+                ) { index, game ->
 
-                GameCard(
-                    game = game
-                ) {
-                    // On click navigate
+                    onScrollPositionChanged(index)
+
+                    if ((index + 1) >= (page * Constants.PAGE_SIZE) && !loading) {
+                        onTriggerNextPage()
+                    }
+
+                    GameCard(
+                        game = game
+                    ) {
+                        // On click navigate
+                    }
                 }
             }
         }
+        CircularLoadingBar(isDisplayed = loading)
     }
 }

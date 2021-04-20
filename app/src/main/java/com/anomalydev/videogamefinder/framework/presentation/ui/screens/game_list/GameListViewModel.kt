@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
+import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
 import com.anomalydev.videogamefinder.util.Constants
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.lang.StringBuilder
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -89,8 +91,27 @@ class GameListViewModel @Inject constructor(
     }
 
     // 2nd Use Case
-    private fun nextSearchPage() {
+    private suspend fun nextSearchPage() {
+        if (gameListScrollPosition + 1 >= (page.value * Constants.PAGE_SIZE)) {
 
+            incrementPageNum()
+
+            if (page.value > 1) {
+
+                loading.value =  true
+
+                val result = gameService.searchGames(
+                    key = key,
+                    page = page.value,
+                    pageSize = Constants.PAGE_SIZE,
+                    searchQuery = query.value,
+                )
+
+                appendListOfGames(dtoMapper.dtoToModelList(result.games))
+
+                loading.value = false
+            }
+        }
     }
 
     // 3rd Use Case
@@ -112,13 +133,42 @@ class GameListViewModel @Inject constructor(
         this.query.value = query
     }
 
+    /**
+     *  Responsible for calling function to set new position
+     */
     fun onChangeGameListPosition(position: Int) {
         setNewPosition(position)
     }
 
+    /**
+     *  Will set the new scroll position
+     */
     private fun setNewPosition(position: Int) {
         this.gameListScrollPosition = position
         Log.d(TAG, "setNewPosition: $gameListScrollPosition")
+    }
+
+    /**
+     *  Responsible for incrementing page number
+     */
+    fun incrementPageNum() {
+        setPageNum(page.value + 1)
+    }
+
+    /**
+     *  Will set the new page number
+     */
+    private fun setPageNum(pageNum: Int) {
+        this.page.value = pageNum
+    }
+
+    /**
+     *  Responsible for appending new list of games
+     */
+    private fun appendListOfGames(result: List<Game>) {
+        val currentList = ArrayList(this.games.value)
+        currentList.addAll(result)
+        this.games.value = currentList
     }
 
 }
