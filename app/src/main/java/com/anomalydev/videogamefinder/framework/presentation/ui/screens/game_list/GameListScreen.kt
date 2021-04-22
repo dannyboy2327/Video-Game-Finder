@@ -5,6 +5,7 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_li
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameList
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.SearchBar
 
@@ -14,36 +15,42 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Searc
 fun GameListScreen(
     viewModel: GameListViewModel,
     onNavigateToGameDetailScreen: (String) -> Unit,
+    onNavigateToSettingsScreen: (String) -> Unit,
     ) {
 
-    val games = viewModel.games.value
+    VideoGameFinderTheme(
+        darkTheme = false,
+    ) {
+        val games = viewModel.games.value
 
-    val loading = viewModel.loading.value
+        val loading = viewModel.loading.value
 
-    val query = viewModel.query.value
+        val query = viewModel.query.value
 
-    val page = viewModel.page.value
+        val page = viewModel.page.value
 
-    Scaffold(
-        topBar = {
-            SearchBar(
-                query = query,
-                onQueryChanged = viewModel::onQueryChanged,
-                onExecuteSearch = {
-                    viewModel.onTriggerEvent(GameListEvents.SearchGamesEvent)
+        Scaffold(
+            topBar = {
+                SearchBar(
+                    query = query,
+                    onQueryChanged = viewModel::onQueryChanged,
+                    onExecuteSearch = {
+                        viewModel.onTriggerEvent(GameListEvents.SearchGamesEvent)
+                    },
+                    onNavigateToSettingsScreen = onNavigateToSettingsScreen
+                )
+            }
+        ) {
+            GameList(
+                games = games,
+                loading = loading,
+                page = page,
+                onScrollPositionChanged = viewModel::onChangeGameListPosition,
+                onTriggerNextPage = {
+                    viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
                 },
+                onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
             )
         }
-    ) {
-        GameList(
-            games = games,
-            loading = loading,
-            page = page,
-            onScrollPositionChanged = viewModel::onChangeGameListPosition,
-            onTriggerNextPage = {
-                viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
-            },
-            onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
-        )
     }
 }
