@@ -13,6 +13,7 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Scree
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.GameDetailsScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -36,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     GameListScreen(
                         viewModel = gameListViewModel,
                         onNavigateToGameDetailScreen = navController::navigate,
+                        onNavigateToSettingsScreen = navController::navigate,
                     )
                 }
 
@@ -46,6 +48,10 @@ class MainActivity : ComponentActivity() {
                     GameDetailsScreen(
                         gameId = navBackStackEntry.arguments?.getInt("gameId"),
                     )
+                }
+
+                composable("settings") { navBackStackEntry ->
+                    Settings()
                 }
             }
         }
