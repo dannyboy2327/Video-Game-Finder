@@ -7,4 +7,6 @@ sealed class Screen(
     object GameList: Screen("gameList")
 
     object GameDetails: Screen("gameDetails")
+
+    object Settings: Screen("settings")
 }
