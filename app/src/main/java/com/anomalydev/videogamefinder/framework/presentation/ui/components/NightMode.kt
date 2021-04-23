@@ -2,12 +2,10 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +30,8 @@ fun NightMode() {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                }
+                },
+            tint = Color.Yellow,
         )
 
         Text(
@@ -45,18 +44,22 @@ fun NightMode() {
                     bottom.linkTo(parent.bottom)
                 },
             style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.onPrimary,
         )
 
         Switch(
-            checked = false,
-            onCheckedChange = { false },
+            checked = true,
+            onCheckedChange = { },
             modifier = Modifier
                 .constrainAs(switch) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                }
+                },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.Red,
+                uncheckedThumbColor = Color.White,
+            )
         )
     }
 }
