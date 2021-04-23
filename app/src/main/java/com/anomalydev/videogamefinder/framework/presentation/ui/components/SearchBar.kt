@@ -17,6 +17,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ fun SearchBar(
         modifier = Modifier
             .fillMaxWidth(),
         elevation = 8.dp,
-        color = MaterialTheme.colors.primary
+        color = Color.Black
     ) {
         Row(
             modifier = Modifier
@@ -46,8 +47,14 @@ fun SearchBar(
             TextField(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .padding(6.dp)
-                    .background(color = MaterialTheme.colors.primaryVariant, shape = CircleShape),
+                    .padding(
+                        start = 8.dp,
+                        top = 6.dp,
+                        bottom = 8.dp,
+                        end = 8.dp,
+                    )
+                    .height(50.dp)
+                    .background(color = MaterialTheme.colors.background, shape = CircleShape),
                 value = query,
                 onValueChange = { newQuery ->
                     onQueryChanged(newQuery)
@@ -55,7 +62,7 @@ fun SearchBar(
                 label = {
                     Text(
                         text = "Search",
-                        color = Color.White
+                        color = MaterialTheme.colors.onBackground,
                     )
                 },
                 leadingIcon = {
@@ -75,7 +82,9 @@ fun SearchBar(
                         keyboardController?.hide()
                     }
                 ),
-                shape = CircleShape
+                shape = CircleShape,
+                maxLines = 1,
+                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
             )
             IconButton(
                 modifier = Modifier
@@ -88,7 +97,7 @@ fun SearchBar(
                 Icon(
                     imageVector = Icons.Filled.Settings,
                     contentDescription = "Settings",
-                    tint = Color.White,
+                    tint = MaterialTheme.colors.secondary,
                 )
             }
         }
