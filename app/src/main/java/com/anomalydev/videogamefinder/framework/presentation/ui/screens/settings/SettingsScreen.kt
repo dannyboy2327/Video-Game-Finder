@@ -20,7 +20,8 @@ fun Settings() {
                     title = {
                         Text(text = "Settings")
                     },
-                    backgroundColor = MaterialTheme.colors.primary)
+                    backgroundColor = MaterialTheme.colors.primary
+                )
             }
         ) {
             Column(
