@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.anomalydev.videogamefinder.framework.presentation.theme.Coda
 import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 
 @ExperimentalComposeUiApi
@@ -35,7 +36,7 @@ fun SearchBar(
         modifier = Modifier
             .fillMaxWidth(),
         elevation = 8.dp,
-        color = Color.Black
+        color = MaterialTheme.colors.primary
     ) {
         Row(
             modifier = Modifier
@@ -63,6 +64,7 @@ fun SearchBar(
                     Text(
                         text = "Search",
                         color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.h6,
                     )
                 },
                 leadingIcon = {
@@ -84,7 +86,15 @@ fun SearchBar(
                 ),
                 shape = CircleShape,
                 maxLines = 1,
-                textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+                textStyle = TextStyle(
+                    color = MaterialTheme.colors.onPrimary,
+                    fontFamily = Coda,
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    disabledIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
             )
             IconButton(
                 modifier = Modifier
