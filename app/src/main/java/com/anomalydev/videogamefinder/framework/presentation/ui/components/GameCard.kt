@@ -62,10 +62,12 @@ fun GameCard(
                     .align(BottomStart)
                     .padding(
                         start = 6.dp,
-                        bottom = 6.dp
+                        bottom = 6.dp,
+                        end = 6.dp,
                     ),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.subtitle1,
             )
         }
     }
