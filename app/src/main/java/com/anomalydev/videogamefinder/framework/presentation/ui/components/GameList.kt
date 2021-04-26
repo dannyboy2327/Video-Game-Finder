@@ -1,11 +1,14 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 import com.anomalydev.videogamefinder.util.Constants
@@ -21,8 +24,10 @@ fun GameList(
     onNavigateToGameDetailScreen: (String) -> Unit,
 ) {
     Box {
-        if (games.isEmpty()) {
+        if (games.isEmpty() && loading) {
 
+        } else if (games.isEmpty() ) {
+            Empty()
         } else {
             LazyRow {
                 itemsIndexed(
