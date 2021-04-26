@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -13,7 +15,12 @@ import com.anomalydev.videogamefinder.R
 import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
-fun NightMode() {
+fun NightMode(
+    isDarkTheme: Boolean,
+    onToggleTheme: () -> Unit
+) {
+
+    val checkedState = remember { mutableStateOf(isDarkTheme)}
 
     ConstraintLayout(
         modifier = Modifier
@@ -43,13 +50,16 @@ fun NightMode() {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.h5,
             color = MaterialTheme.colors.onPrimary,
         )
 
         Switch(
-            checked = true,
-            onCheckedChange = { },
+            checked = checkedState.value,
+            onCheckedChange = {
+                checkedState.value = it
+                onToggleTheme()
+                              },
             modifier = Modifier
                 .constrainAs(switch) {
                     end.linkTo(parent.end)
@@ -62,10 +72,4 @@ fun NightMode() {
             )
         )
     }
-}
-
-@Preview
-@Composable
-fun PreviewNightMode() {
-    NightMode()
 }
