@@ -2,9 +2,15 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_li
 
 
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameList
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.SearchBar
@@ -13,22 +19,23 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Searc
 @ExperimentalComposeUiApi
 @Composable
 fun GameListScreen(
+    isDarkTheme: Boolean,
     viewModel: GameListViewModel,
     onNavigateToGameDetailScreen: (String) -> Unit,
     onNavigateToSettingsScreen: (String) -> Unit,
     ) {
 
+    val games = viewModel.games.value
+
+    val loading = viewModel.loading.value
+
+    val query = viewModel.query.value
+
+    val page = viewModel.page.value
+
     VideoGameFinderTheme(
-        darkTheme = false,
+        darkTheme = isDarkTheme,
     ) {
-        val games = viewModel.games.value
-
-        val loading = viewModel.loading.value
-
-        val query = viewModel.query.value
-
-        val page = viewModel.page.value
-
         Scaffold(
             topBar = {
                 SearchBar(
@@ -41,16 +48,35 @@ fun GameListScreen(
                 )
             }
         ) {
-            GameList(
-                games = games,
-                loading = loading,
-                page = page,
-                onScrollPositionChanged = viewModel::onChangeGameListPosition,
-                onTriggerNextPage = {
-                    viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
-                },
-                onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
-            )
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
+            ) {
+
+                Text(
+                    text = "Games",
+                    color = MaterialTheme.colors.onBackground,
+                    modifier = Modifier
+                        .padding(
+                            top = 16.dp,
+                            start = 8.dp,
+                        ),
+                    style = MaterialTheme.typography.h5,
+                )
+
+                GameList(
+                    games = games,
+                    loading = loading,
+                    page = page,
+                    onScrollPositionChanged = viewModel::onChangeGameListPosition,
+                    onTriggerNextPage = {
+                        viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
+                    },
+                    onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
+                )
+            }
         }
     }
 }

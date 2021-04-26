@@ -2,37 +2,60 @@ package com.anomalydev.videogamefinder.framework.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
+/**
+ *  Default theme: Dark Theme Colors
+ */
 
-// Light Theme Colors
-val red300 = Color(0xFFEF666C)
-val red400 = Color(0xFFFA3C46)
-val red500 = Color(0xFFFF1B27)
-val red600 = Color(0xFFF00028)
-val red700 = Color(0xFFDE0022)
-val red800 = Color(0xFFD1001A)
+// Primary Color
+val Black900 = Color(0xFF000000)
 
-// Secondary Colors
-val white50 = Color(0xFFFFFFFF)
-val white100 = Color(0xFFFAFAFA)
-val whiteGrey200 = Color(0xFFF5F5F5)
-val whiteGrey300 = Color(0xFFF0F0F0)
-val whiteGrey400 = Color(0xFFDEDEDE)
-val grey500 = Color(0xFFC2C2C2)
-val grey600 = Color(0xFF979797)
-val grey700 = Color(0xFF818181)
-val grey800 = Color(0xFF818181)
+// Primary Invariant Color
+val Black700 = Color(0xFF434343)
 
-// Dark Theme Colors
-val black400 = Color(0xFF9D9D9D)
-val black500 = Color(0xFF7B7B7B)
-val black600 = Color(0xFF555555)
-val black700 = Color(0xFF434343)
-val black800 = Color(0xFF262626)
-val black900 = Color(0xFF000000)
+// OnPrimary Color / Secondary Color
+val White50 = Color(0xFFFFFFFF)
 
+// Secondary Variant Color
+val White200 = Color(0xFFF5F5F5)
 
-val black1 = Color(0xFF222222)
-val black2 = Color(0xFF000000)
-
+// Error Color
 val redErrorDark = Color(0xFFB00020)
+
+// OnError Color
 val redErrorLight = Color(0xFFEF5350)
+
+// Background/Surface Color
+val Grey900 = Color(0xFF171F22)
+
+// OnBackground/OnSurface Color
+val Grey600 = Color(0xFF617379)
+
+/**
+ *  Light Theme Colors
+ */
+
+// Primary Color
+val Black500 = Color(0xFF7B7B7B)
+
+// Primary Invariant Color
+val Black300 = Color(0xFFC4C4C4)
+
+// OnPrimary Color / Secondary Color
+// val White50 = Color(0xFFFFFFFF)
+
+// Secondary Variant Color
+// val White200 = Color(0xFFF5F5F5)
+
+// Error Color
+// val redErrorDark = Color(0xFFB00020)
+
+// OnError Color
+// val redErrorLight = Color(0xFFEF5350)
+
+// Background/Surface Color
+val Grey700 = Color(0xFF565F62)
+
+// OnBackground/OnSurface Color
+val Grey400 = Color(0xFF84959A)
+
+
