@@ -4,21 +4,30 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.anomalydev.videogamefinder.framework.presentation.theme.Coda
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.NightMode
 
 @Composable
-fun Settings() {
+fun Settings(
+    isDarkTheme: Boolean,
+    onToggleTheme: () -> Unit,
+) {
     VideoGameFinderTheme(
-        darkTheme = false,
+        darkTheme = isDarkTheme,
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = "Settings")
+                        Text(
+                            text = "Settings",
+                            style = MaterialTheme.typography.h4,
+                        )
                     },
                     backgroundColor = MaterialTheme.colors.primary
                 )
@@ -33,7 +42,10 @@ fun Settings() {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    NightMode()
+                    NightMode(
+                        isDarkTheme = isDarkTheme,
+                        onToggleTheme = { onToggleTheme() }
+                    )
                 }
 
                 Divider(
@@ -42,10 +54,4 @@ fun Settings() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewSettings() {
-    Settings()
 }
