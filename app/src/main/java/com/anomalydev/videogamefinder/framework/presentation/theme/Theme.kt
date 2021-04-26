@@ -51,7 +51,7 @@ fun VideoGameFinderTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = CodaTypography,
         shapes = Shapes,
         content = content
     )
