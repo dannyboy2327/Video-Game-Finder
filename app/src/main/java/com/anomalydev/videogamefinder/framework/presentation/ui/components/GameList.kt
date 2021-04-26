@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 import com.anomalydev.videogamefinder.util.Constants
@@ -25,7 +26,10 @@ fun GameList(
 ) {
     Box {
         if (games.isEmpty() && loading) {
-
+            LoadingGameListShimmer(
+                cardHeight = 180.dp,
+                cardWidth = 120.dp,
+            )
         } else if (games.isEmpty() ) {
             Empty()
         } else {
