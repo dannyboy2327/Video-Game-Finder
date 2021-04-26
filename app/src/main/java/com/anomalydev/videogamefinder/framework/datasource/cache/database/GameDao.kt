@@ -5,6 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.anomalydev.videogamefinder.framework.datasource.cache.model.GameEntity
+import com.anomalydev.videogamefinder.util.Constants
+import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 
 @Dao
 interface GameDao {
@@ -29,7 +31,63 @@ interface GameDao {
     @Query("DELETE FROM games")
     suspend fun deleteAllGames()
 
-//    // Will delete a game by it's id
+    // Will delete a game by it's id
     @Query("DELETE FROM games WHERE id = :primaryKey")
     suspend fun deleteGame(primaryKey: Int): Int
+
+    /**
+     *  Retrieve games for a page
+     *  Ex. page = 2 retrieves games from 30-60.
+     *  Ex. page = 3 retrieves games from 60-90.
+     */
+
+    @Query("""
+        SELECT * FROM games
+        WHERE name LIKE '%' || :query || '%'
+        ORDER BY updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+    """)
+    suspend fun searchGames(
+        query: String,
+        page: Int,
+        pageSize: Int = PAGE_SIZE,
+    ): List<GameEntity>
+
+    /**
+     *  Retrieve games for a page with no query
+     */
+    @Query("""
+        SELECT * FROM games
+        ORDER BY updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
+    """)
+    suspend fun getAllGames(
+        page: Int,
+        pageSize: Int = PAGE_SIZE,
+    ): List<GameEntity>
+
+    /**
+     * Restore games after process death
+     */
+    @Query("""
+        SELECT * FROM games
+        WHERE name LIKE '%' || :query || '%'
+        ORDER BY updated DESC LIMIT (:page * :pageSize)
+    """)
+    suspend fun restoreGames(
+        query: String,
+        page: Int,
+        pageSize: Int = PAGE_SIZE,
+    ): List<GameEntity>
+
+    /**
+     * Same as 'restoreGames' but with no query
+     */
+    @Query("""
+        SELECT * FROM games
+        ORDER BY updated DESC LIMIT (:page * :pageSize)
+    """)
+    suspend fun restoreAllGames(
+        query: String,
+        page: Int,
+        pageSize: Int = PAGE_SIZE,
+    ): List<GameEntity>
 }
