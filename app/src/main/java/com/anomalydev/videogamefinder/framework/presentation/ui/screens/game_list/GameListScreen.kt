@@ -2,6 +2,7 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_li
 
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,22 +19,23 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Searc
 @ExperimentalComposeUiApi
 @Composable
 fun GameListScreen(
+    isDarkTheme: Boolean,
     viewModel: GameListViewModel,
     onNavigateToGameDetailScreen: (String) -> Unit,
     onNavigateToSettingsScreen: (String) -> Unit,
     ) {
 
+    val games = viewModel.games.value
+
+    val loading = viewModel.loading.value
+
+    val query = viewModel.query.value
+
+    val page = viewModel.page.value
+
     VideoGameFinderTheme(
-        darkTheme = true,
+        darkTheme = isDarkTheme,
     ) {
-        val games = viewModel.games.value
-
-        val loading = viewModel.loading.value
-
-        val query = viewModel.query.value
-
-        val page = viewModel.page.value
-
         Scaffold(
             topBar = {
                 SearchBar(
@@ -50,6 +52,7 @@ fun GameListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
             ) {
 
                 Text(
@@ -60,7 +63,7 @@ fun GameListScreen(
                             top = 16.dp,
                             start = 8.dp,
                         ),
-                    style = MaterialTheme.typography.h6,
+                    style = MaterialTheme.typography.h5,
                 )
 
                 GameList(
