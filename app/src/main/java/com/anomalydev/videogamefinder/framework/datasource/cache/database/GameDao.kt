@@ -86,7 +86,6 @@ interface GameDao {
         ORDER BY updated DESC LIMIT (:page * :pageSize)
     """)
     suspend fun restoreAllGames(
-        query: String,
         page: Int,
         pageSize: Int = PAGE_SIZE,
     ): List<GameEntity>
