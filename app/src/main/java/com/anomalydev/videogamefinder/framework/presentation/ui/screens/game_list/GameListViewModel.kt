@@ -7,13 +7,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.ViewModelConstants
 import com.anomalydev.videogamefinder.util.Constants
+import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.lang.StringBuilder
@@ -22,6 +26,7 @@ import javax.inject.Named
 
 @HiltViewModel
 class GameListViewModel @Inject constructor(
+    private val searchGames: SearchGames,
     private val gameService: GameService,
     private val dtoMapper: GameDtoMapper,
     @Named("auth_key") private val key: String,
@@ -96,39 +101,58 @@ class GameListViewModel @Inject constructor(
     }
 
     // 1st Use Case
-    private suspend fun newGameSearch() {
+    private fun newGameSearch() {
 
-        loading.value = true
-        val result = gameService.searchGames(
+        // Reset state for new search
+        resetSearchState()
+
+        searchGames.execute(
             key = key,
             page = page.value,
-            pageSize = Constants.PAGE_SIZE,
-            searchQuery = query.value,
-        )
-        games.value = dtoMapper.dtoToModelList(result.games)
-        loading.value = false
+            pageSize = PAGE_SIZE,
+            query = query.value,
+        ).onEach { dataState ->
+
+            loading.value = dataState.loading
+
+            dataState.data?.let { list ->
+                games.value = list
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "newGameSearch: $error")
+                // TODO("Handle the error")
+            }
+
+        }.launchIn(viewModelScope)
     }
 
     // 2nd Use Case
-    private suspend fun nextSearchPage() {
-        if (gameListScrollPosition + 1 >= (page.value * Constants.PAGE_SIZE)) {
+    private fun nextSearchPage() {
+        if (gameListScrollPosition + 1 >= (page.value * PAGE_SIZE)) {
 
             incrementPageNum()
 
             if (page.value > 1) {
-
-                loading.value =  true
-
-                val result = gameService.searchGames(
+                searchGames.execute(
                     key = key,
                     page = page.value,
-                    pageSize = Constants.PAGE_SIZE,
-                    searchQuery = query.value,
-                )
+                    pageSize = PAGE_SIZE,
+                    query = query.value,
+                ).onEach { dataState ->
 
-                appendListOfGames(dtoMapper.dtoToModelList(result.games))
+                    loading.value = dataState.loading
 
-                loading.value = false
+                    dataState.data?.let { list ->
+                        appendListOfGames(list)
+                    }
+
+                    dataState.error?.let { error ->
+                        Log.e(TAG, "nextSearchPage: $error")
+                        // TODO("Handle the error")
+                    }
+
+                }.launchIn(viewModelScope)
             }
         }
     }
@@ -205,6 +229,15 @@ class GameListViewModel @Inject constructor(
         val currentList = ArrayList(games.value)
         currentList.addAll(result)
         games.value = currentList
+    }
+
+    /**
+     *  Will reset the search state
+     */
+    private fun resetSearchState() {
+        games.value = listOf()
+        page.value = 1
+        onChangeGameListPosition(0)
     }
 
 }
