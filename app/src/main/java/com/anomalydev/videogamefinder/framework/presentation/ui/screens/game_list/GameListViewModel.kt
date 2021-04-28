@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
@@ -27,6 +28,7 @@ import javax.inject.Named
 @HiltViewModel
 class GameListViewModel @Inject constructor(
     private val searchGames: SearchGames,
+    private val restoreGames: RestoreGames,
     private val gameService: GameService,
     private val dtoMapper: GameDtoMapper,
     @Named("auth_key") private val key: String,
@@ -158,22 +160,24 @@ class GameListViewModel @Inject constructor(
     }
 
     // 3rd Use Case
-    private suspend fun restoreState() {
-        loading.value = true
-        val results: MutableList<Game> = mutableListOf()
-        for (pageNum in 1..page.value) {
-            val result = gameService.searchGames(
-                key = key,
-                page = page.value,
-                pageSize = Constants.PAGE_SIZE,
-                searchQuery = query.value,
-            )
-            results.addAll(dtoMapper.dtoToModelList(result.games))
-            if (pageNum == page.value) {
-                games.value = results
-                loading.value = false
+    private fun restoreState() {
+        restoreGames.execute(
+            page = page.value,
+            query = query.value,
+        ).onEach { dataState ->
+
+            loading.value = dataState.loading
+
+            dataState.data?.let { list ->
+                games.value = list
             }
-        }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "restoreState: $error")
+                // TODO("Handle the error")
+            }
+
+        }.launchIn(viewModelScope)
     }
 
     /**
