@@ -1,5 +1,6 @@
 package com.anomalydev.videogamefinder.framework.di
 
+import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDao
 import com.anomalydev.videogamefinder.framework.datasource.cache.util.GameEntityMapper
@@ -30,6 +31,18 @@ object InteractorsModule {
             gameService = gameService,
             entityMapper = gameEntityMapper,
             dtoMapper = gameDtoMapper,
+        )
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideRestoreGames(
+        gameDao: GameDao,
+        entityMapper: GameEntityMapper,
+    ): RestoreGames {
+        return RestoreGames(
+            gameDao = gameDao,
+            entityMapper = entityMapper,
         )
     }
 }
