@@ -87,7 +87,7 @@ class SearchGamesTest {
         ).toList()
 
         // Confirm the cache is no longer empty
-        assert(gameDaoFake.getAllGames(1, 30).isNotEmpty())
+        assert(gameDaoFake.getAllGames(1, 3).isNotEmpty())
 
         // first emission should be loading status
         assert(flowItems[0].loading)
