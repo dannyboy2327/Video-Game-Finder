@@ -10,10 +10,8 @@ import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
-import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
-import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.ViewModelConstants
-import com.anomalydev.videogamefinder.util.Constants
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.GameListViewModelConstants
 import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.lang.StringBuilder
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -53,17 +50,17 @@ class GameListViewModel @Inject constructor(
     init {
 
         // Will restore the page num if not null
-        savedStateHandle.get<Int>(ViewModelConstants.PAGE_KEY)?.let { page ->
+        savedStateHandle.get<Int>(GameListViewModelConstants.PAGE_KEY)?.let { page ->
             setPageNum(page)
         }
 
         // Will restore the query if not null
-        savedStateHandle.get<String>(ViewModelConstants.QUERY_KEY)?.let { query ->
+        savedStateHandle.get<String>(GameListViewModelConstants.QUERY_KEY)?.let { query ->
             setQuery(query)
         }
 
         // Will restore the scroll position if not null
-        savedStateHandle.get<Int>(ViewModelConstants.SCROLL_POSITION)?.let {  position ->
+        savedStateHandle.get<Int>(GameListViewModelConstants.SCROLL_POSITION)?.let { position ->
             setNewPosition(position)
         }
 
@@ -192,7 +189,7 @@ class GameListViewModel @Inject constructor(
      */
     private fun setQuery(query: String) {
         this.query.value = query
-        savedStateHandle.set(ViewModelConstants.QUERY_KEY, this.query.value)
+        savedStateHandle.set(GameListViewModelConstants.QUERY_KEY, this.query.value)
     }
 
     /**
@@ -208,7 +205,7 @@ class GameListViewModel @Inject constructor(
     private fun setNewPosition(position: Int) {
         gameListScrollPosition = position
         Log.d(TAG, "setNewPosition: $gameListScrollPosition")
-        savedStateHandle.set(ViewModelConstants.SCROLL_POSITION, gameListScrollPosition)
+        savedStateHandle.set(GameListViewModelConstants.SCROLL_POSITION, gameListScrollPosition)
     }
 
     /**
@@ -223,7 +220,7 @@ class GameListViewModel @Inject constructor(
      */
     private fun setPageNum(pageNum: Int) {
         page.value = pageNum
-        savedStateHandle.set(ViewModelConstants.PAGE_KEY, page.value)
+        savedStateHandle.set(GameListViewModelConstants.PAGE_KEY, page.value)
     }
 
     /**
