@@ -1,7 +1,8 @@
-package com.anomalydev.videogamefinder.interactors.game_list
+package com.anomalydev.videogamefinder.interactors.game
 
 import com.anomalydev.videogamefinder.BuildConfig
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.business.interactors.game.GetGame
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.cache.AppDatabaseFake
 import com.anomalydev.videogamefinder.cache.GameDaoFake
@@ -22,7 +23,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
-class SearchGamesTest {
+class GetGameTest {
 
     private lateinit var mockWebServer: MockWebServer
     private lateinit var baseUrl: HttpUrl
@@ -31,9 +32,11 @@ class SearchGamesTest {
     private val DUMMY_QUERY = ""
 
     // system in test
-    private lateinit var searchGames: SearchGames
+    private lateinit var getGame: GetGame
+    private val GAME_ID = 3498
 
     // dependencies
+    private lateinit var searchGames: SearchGames
     private lateinit var gameService: GameService
     private lateinit var gameDaoFake: GameDaoFake
     private val dtoMapper =  GameDtoMapper()
@@ -52,22 +55,28 @@ class SearchGamesTest {
 
         gameDaoFake = GameDaoFake(appDatabaseFake)
 
+        searchGames = SearchGames(
+            gameDao = gameDaoFake,
+            gameService = gameService,
+            dtoMapper = dtoMapper,
+            entityMapper = entityMapper,
+        )
+
         // instantiate system in test
-       searchGames = SearchGames(
-           gameDao = gameDaoFake,
-           gameService = gameService,
-           dtoMapper = dtoMapper,
-           entityMapper = entityMapper,
+        getGame = GetGame(
+            gameDao = gameDaoFake,
+            gameService = gameService,
+            entityMapper = entityMapper,
+            dtoMapper = dtoMapper,
         )
     }
 
     /**
-     * 1. Are the games retrieved from the network
-     * 2. Are the games inserted into the cache?
-     * 3. Are the games then emitted as a Flow from the cache to the UI
+     * 1. Get some games from the network and insert into cache
+     * 2. Try to retrieve games by their specific game id
      */
     @Test
-    fun getGamesFromNetwork_emitGamesFromCache(): Unit = runBlocking {
+    fun getGamesFromNetwork_getGameById(): Unit = runBlocking {
 
         // Condition the response
         mockWebServer.enqueue(
@@ -79,55 +88,27 @@ class SearchGamesTest {
         // confirm the cache is empty to start
         assert(gameDaoFake.getAllGames(1, 3).isEmpty())
 
-        val flowItems = searchGames.execute(
-            DUMMY_KEY,
-            1,
-            DUMMY_QUERY,
-            3,
-        ).toList()
+        // get recipes from network and insert into cache
+        val searchResult = searchGames.execute(DUMMY_KEY, 1, DUMMY_QUERY, 3).toList()
 
-        // Confirm the cache is no longer empty
+        // confirm the cache is no longer empty
         assert(gameDaoFake.getAllGames(1, 3).isNotEmpty())
 
-        // first emission should be loading status
-        assert(flowItems[0].loading)
-
-        // second emission should be list of games
-        val games = flowItems[1].data
-        assert(games?.size?: 0 > 0)
-
-        // confirm they are actually game objects
-        assert(games?.get(0) is Game)
-
-        // Ensure loading is false now
-        assert(!flowItems[1].loading)
-    }
-
-    @Test
-    fun getRecipesFromNetwork_emitHttpError(): Unit = runBlocking {
-        // Condition the response
-        mockWebServer.enqueue(
-            MockResponse()
-                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
-                .setBody("{}")
-        )
-
-        val flowItems = searchGames.execute(
-            DUMMY_KEY,
-            1,
-            DUMMY_QUERY,
-            3,
-        ).toList()
+        // run use case
+        val gameAsFlow = getGame.execute(GAME_ID, DUMMY_KEY).toList()
 
         // first emission should be `loading`
-        assert(flowItems[0].loading)
+        assert(gameAsFlow[0].loading)
 
-        // Second emission should be the exception
-        val error = flowItems[1].error
-        assert(error != null)
+        // second emission should be the recipe
+        val game = gameAsFlow[1].data
+        assert(game?.id == GAME_ID)
 
-        // loading should be false now
-        assert(!flowItems[1].loading)
+        // confirm it is actually a Recipe object
+        assert(game is Game)
+
+        // 'loading' should be false now
+        assert(!gameAsFlow[1].loading)
     }
 
     @AfterEach
