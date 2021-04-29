@@ -1,12 +1,50 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameView
 
 @Composable
 fun GameDetailsScreen(
     isDarkTheme: Boolean,
+    viewModel: GameDetailsViewModel,
     gameId: Int?,
 ) {
+    if (gameId == null) {
+        //TODO("Show Invalid Recipe")
+    } else {
 
+        val onLoad = viewModel.onLoad.value
+
+        if (!onLoad) {
+            viewModel.onLoad.value = true
+            viewModel.onTriggerEvent(GameDetailsEvents.GetGameEvent(gameId))
+        }
+
+        val loading = viewModel.loading.value
+
+        val game = viewModel.game.value
+
+        VideoGameFinderTheme(
+            darkTheme = isDarkTheme,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                if (loading && game == null) {
+
+                } else if (!loading && game == null && onLoad) {
+                    //TODO("Show Invalid Recipe")
+                } else {
+                    game?.let { game ->
+                        GameView(game = game)
+                    }
+                }
+            }
+        }
+    }
 }
