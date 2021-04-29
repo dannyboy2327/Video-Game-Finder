@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.GameDetailsScreen
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.GameDetailsViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
@@ -67,8 +68,11 @@ class MainActivity : ComponentActivity() {
                     "gameDetails/{gameId}",
                     arguments = listOf(navArgument("gameId") { type = NavType.IntType})
                 ) { navBackStackEntry ->
+                    val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                    val gameDetailsViewModel: GameDetailsViewModel = viewModel("GameDetailsViewModel", factory)
                     GameDetailsScreen(
                         isDarkTheme = isDark.value,
+                        viewModel = gameDetailsViewModel,
                         gameId = navBackStackEntry.arguments?.getInt("gameId"),
                     )
                 }
