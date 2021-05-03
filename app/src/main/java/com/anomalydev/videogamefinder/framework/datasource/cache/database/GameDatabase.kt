@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.anomalydev.videogamefinder.framework.datasource.cache.model.GameEntity
 
-@Database(entities = [GameEntity::class], version = 2)
+@Database(entities = [GameEntity::class], version = 1)
 abstract class GameDatabase: RoomDatabase() {
 
     abstract fun gameDao(): GameDao
