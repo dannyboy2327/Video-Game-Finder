@@ -3,6 +3,7 @@ package com.anomalydev.videogamefinder.framework.datasource.cache.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.anomalydev.videogamefinder.business.domain.model.Rating
 
 @Entity(tableName = "games")
 data class GameEntity(
@@ -34,6 +35,9 @@ data class GameEntity(
 
     @ColumnInfo(name = "rating_top")
     var rating_top: Int,
+
+    @ColumnInfo(name = "ratings")
+    var ratings: List<Rating>,
 
     @ColumnInfo(name = "playtime")
     var playtime: Int,

@@ -21,6 +21,7 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
             website = model.website,
             rating = model.rating,
             rating_top = model.rating_top,
+            ratings = model.ratings,
             playtime = model.playtime,
         )
     }
@@ -39,6 +40,7 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
             website = domainModel.website,
             rating = domainModel.rating,
             rating_top = domainModel.rating_top,
+            ratings = domainModel.ratings,
             playtime = domainModel.playtime,
         )
     }
