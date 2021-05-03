@@ -1,5 +1,6 @@
 package com.anomalydev.videogamefinder.framework.datasource.network.model
 
+import com.anomalydev.videogamefinder.business.domain.model.Rating
 import com.google.gson.annotations.SerializedName
 
 data class GameDto(
@@ -31,7 +32,9 @@ data class GameDto(
     @SerializedName("rating_top")
     var rating_top: Int,
 
+    @SerializedName("ratings")
+    var ratings: List<Rating>,
+
     @SerializedName("playtime")
-    var playtime: Int,
-) {
-}
+    var playtime: Int?,
+)

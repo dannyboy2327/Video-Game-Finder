@@ -13,5 +13,13 @@ data class Game(
     val website: String,
     val rating: Float,
     val rating_top: Int,
+    val ratings: List<Rating>,
     val playtime: Int,
+)
+
+data class Rating(
+    val id: Int,
+    val title: String,
+    val count: Int,
+    val percent: Float,
 )

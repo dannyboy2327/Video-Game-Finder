@@ -19,6 +19,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
             website = model.website?: "",
             rating = model.rating,
             rating_top = model.rating_top,
+            ratings = model.ratings,
             playtime = model.playtime?: 0,
         )
     }
@@ -34,6 +35,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
             website = domainModel.website,
             rating = domainModel.rating,
             rating_top = domainModel.rating_top,
+            ratings = domainModel.ratings,
             playtime = domainModel.playtime,
         )
     }
