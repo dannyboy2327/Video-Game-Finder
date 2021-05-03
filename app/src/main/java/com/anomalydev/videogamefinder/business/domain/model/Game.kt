@@ -6,9 +6,12 @@ package com.anomalydev.videogamefinder.business.domain.model
 data class Game(
     val id: Int,
     val name: String,
+    val description: String,
     val released: String,
-    val imageUrl: String,
+    val updated: String,
+    val background_image: String,
+    val website: String,
     val rating: Float,
     val rating_top: Int,
-    val updated: String,
+    val playtime: Int,
 )
