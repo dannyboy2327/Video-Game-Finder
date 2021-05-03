@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDao
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDatabase
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDatabase.Companion.DATABASE_NAME
+import com.anomalydev.videogamefinder.framework.datasource.cache.util.Converter
 import com.anomalydev.videogamefinder.framework.datasource.cache.util.GameEntityMapper
 import com.anomalydev.videogamefinder.framework.presentation.BaseApplication
 import dagger.Module
@@ -21,6 +22,7 @@ object CacheModule {
     fun provideDatabase(app: BaseApplication): GameDatabase {
         return Room
             .databaseBuilder(app, GameDatabase::class.java, DATABASE_NAME)
+            .addTypeConverter(Converter())
             .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
