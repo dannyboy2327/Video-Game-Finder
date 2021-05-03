@@ -14,11 +14,20 @@ data class GameEntity(
     @ColumnInfo(name = "name")
     var name: String,
 
+    @ColumnInfo(name = "description")
+    var description: String,
+
     @ColumnInfo(name = "released")
     var released: String,
 
-    @ColumnInfo(name = "image_url")
-    var imageUrl: String,
+    @ColumnInfo(name = "updated")
+    var updated: String,
+
+    @ColumnInfo(name = "background_image")
+    var background_image: String,
+
+    @ColumnInfo(name = "website")
+    var website: String,
 
     @ColumnInfo(name = "rating")
     var rating: Float,
@@ -26,6 +35,6 @@ data class GameEntity(
     @ColumnInfo(name = "rating_top")
     var rating_top: Int,
 
-    @ColumnInfo(name = "updated")
-    var updated: String,
+    @ColumnInfo(name = "playtime")
+    var playtime: Int,
 )
