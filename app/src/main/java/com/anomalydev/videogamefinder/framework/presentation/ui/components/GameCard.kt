@@ -44,7 +44,7 @@ fun GameCard(
     ) {
         Box {
             CoilImage(
-                data = game.imageUrl,
+                data = game.background_image,
                 contentDescription = game.name,
                 fadeIn = true,
                 error = {

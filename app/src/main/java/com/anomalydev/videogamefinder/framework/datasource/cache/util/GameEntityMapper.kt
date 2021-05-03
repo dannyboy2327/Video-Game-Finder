@@ -14,11 +14,14 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
         return Game(
             id = model.id,
             name = model.name,
+            description = model.description,
             released = model.released,
-            imageUrl = model.imageUrl,
+            updated = model.updated,
+            background_image = model.background_image,
+            website = model.website,
             rating = model.rating,
             rating_top = model.rating_top,
-            updated = model.updated
+            playtime = model.playtime,
         )
     }
 
@@ -29,11 +32,14 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
         return GameEntity(
             id = domainModel.id,
             name = domainModel.name,
+            description = domainModel.description,
             released = domainModel.released,
-            imageUrl = domainModel.imageUrl,
+            updated = domainModel.updated,
+            background_image = domainModel.background_image,
+            website = domainModel.website,
             rating = domainModel.rating,
             rating_top = domainModel.rating_top,
-            updated = domainModel.updated
+            playtime = domainModel.playtime,
         )
     }
 

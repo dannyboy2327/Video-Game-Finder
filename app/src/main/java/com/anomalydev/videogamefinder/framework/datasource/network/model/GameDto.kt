@@ -10,19 +10,28 @@ data class GameDto(
     @SerializedName("name")
     var name: String,
 
+    @SerializedName("description")
+    var description: String?,
+
     @SerializedName("released")
     var released: String?,
 
+    @SerializedName("updated")
+    var updated: String,
+
     @SerializedName("background_image")
-    var image: String?,
+    var background_image: String?,
+
+    @SerializedName("website")
+    var website: String?,
 
     @SerializedName("rating")
     var rating: Float,
 
     @SerializedName("rating_top")
-    var ratingTop: Int,
+    var rating_top: Int,
 
-    @SerializedName("updated")
-    var updated: String
+    @SerializedName("playtime")
+    var playtime: Int,
 ) {
 }

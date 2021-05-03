@@ -12,7 +12,7 @@ import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 interface GameDao {
 
     // Will insert a game to the database
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGame(game: GameEntity): Long
 
    // Will insert a list of games to the database

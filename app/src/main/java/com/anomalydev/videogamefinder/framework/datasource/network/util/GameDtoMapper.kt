@@ -2,6 +2,7 @@ package com.anomalydev.videogamefinder.framework.datasource.network.util
 
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.business.domain.util.DateUtil
+import com.anomalydev.videogamefinder.business.domain.util.DescriptionUtil
 import com.anomalydev.videogamefinder.business.domain.util.DomainMapper
 import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
 
@@ -11,11 +12,14 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
         return Game(
             id = model.id,
             name = model.name,
-            released = model.released?: "Unknown",
-            imageUrl = model.image?: "",
+            description = DescriptionUtil.removeTagFromDescriptionString(model.description?: "Not available"),
+            released = model.released?: "",
+            updated = DateUtil.removeTimeFromDateString(model.updated),
+            background_image = model.background_image?: "",
+            website = model.website?: "",
             rating = model.rating,
-            rating_top = model.ratingTop,
-            updated = DateUtil.removeTimeFromDateString(model.updated)
+            rating_top = model.rating_top,
+            playtime = model.playtime?: 0,
         )
     }
 
@@ -23,11 +27,14 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
         return GameDto(
             id = domainModel.id,
             name = domainModel.name,
-            released = domainModel.released,
-            image = domainModel.imageUrl,
+            description = domainModel.description,
+            released = domainModel.released?: "Unknown",
+            updated = DateUtil.removeTimeFromDateString(domainModel.updated),
+            background_image = domainModel.background_image?: "",
+            website = domainModel.website,
             rating = domainModel.rating,
-            ratingTop = domainModel.rating_top,
-            updated = domainModel.updated
+            rating_top = domainModel.rating_top,
+            playtime = domainModel.playtime,
         )
     }
 

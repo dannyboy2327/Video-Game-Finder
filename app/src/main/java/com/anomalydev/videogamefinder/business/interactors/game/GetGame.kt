@@ -27,24 +27,19 @@ class GetGame(
 
             emit(DataState.loading<Game>())
 
-            var game = getGameFromCache(gameId = gameId)
+            val networkGame = getGameFromNetwork(key = key, gameId = gameId)
+            gameDao.insertGame(
+               entityMapper.mapFromDomainModel(networkGame)
+            )
+
+            val game = getGameFromCache(gameId)
 
             if (game != null) {
                 emit(DataState.success(game))
             } else {
-//                val networkGame = getGameFromNetwork(key = key, gameId = gameId)
-//                gameDao.insertGame(
-//                   entityMapper.mapFromDomainModel(networkGame)
-//                )
-//
-//                game = getGameFromCache(gameId)
-//
-//                if (game != null) {
-//                    emit(DataState.success(game))
-//                } else {
-//                    throw Exception("Unable to get the game from the cache")
-//                }
+                throw Exception("Unable to get the game from the cache")
             }
+
         } catch (e: Exception) {
             Log.e(TAG, "execute: ${e.message}")
             emit(DataState.error<Game>(e.message?: "Unknown"))
@@ -64,8 +59,13 @@ class GetGame(
      * Helper function to get a game from the network
      * !Currently api has no method to obtain a game by itself!
      */
-    private suspend fun getGameFromNetwork(key: String, gameId: Int): Game? {
-        return null
+    private suspend fun getGameFromNetwork(key: String, gameId: Int): Game {
+        return dtoMapper.mapToDomainModel(
+            gameService.getGame(
+                gameId = gameId,
+                key = key,
+            )
+        )
     }
 
 }
