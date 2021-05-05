@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
-import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameView
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameView
 
 @Composable
 fun GameDetailsScreen(
