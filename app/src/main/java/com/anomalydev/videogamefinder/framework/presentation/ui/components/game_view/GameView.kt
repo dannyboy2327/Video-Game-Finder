@@ -1,4 +1,4 @@
-package com.anomalydev.videogamefinder.framework.presentation.ui.components
+package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -7,7 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.business.domain.model.Game
-import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameViewWebsite
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameImageBody
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameImageHeading
 
 @Composable
 fun GameView(
@@ -77,5 +78,11 @@ fun GameView(
                 ),
             style = MaterialTheme.typography.h5,
         )
+
+        for (rating in game.ratings) {
+            GameViewReview(
+                rating = rating,
+            )
+        }
     }
 }
