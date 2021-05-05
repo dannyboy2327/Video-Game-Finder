@@ -1,7 +1,6 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
