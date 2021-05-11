@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameView
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameViewLoading
 
 @Composable
 fun GameDetailsScreen(
@@ -36,7 +37,7 @@ fun GameDetailsScreen(
                     .fillMaxSize()
             ) {
                 if (loading && game == null) {
-
+                    GameViewLoading()
                 } else if (!loading && game == null && onLoad) {
                     //TODO("Show Invalid Recipe")
                 } else {
