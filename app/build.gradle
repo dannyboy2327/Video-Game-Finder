@@ -46,6 +46,7 @@ android {
         kotlinCompilerExtensionVersion compose_version
         kotlinCompilerVersion '1.4.32'
     }
+    compileSdkVersion 30
 }
 
 dependencies {
@@ -91,7 +92,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     // Coil
-    implementation "com.google.accompanist:accompanist-coil:0.6.2"
+    implementation 'com.google.accompanist:accompanist-coil:0.9.0'
 
     // JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
@@ -99,7 +100,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
 
     // MockWeb Server
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+    testImplementation('com.squareup.okhttp3:mockwebserver:5.0.0-alpha.2')
 
     // RatingBar
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.0.1'
