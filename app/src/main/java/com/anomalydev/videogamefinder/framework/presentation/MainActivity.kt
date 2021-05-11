@@ -22,6 +22,7 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_det
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,8 +52,15 @@ class MainActivity : ComponentActivity() {
             // Composable to link navController to graph
             NavHost(
                 navController = navController,
-                startDestination = Screen.GameList.route,
+                startDestination = Screen.Splash.route,
             ) {
+                composable("splash") { navBackStackEntry ->
+                    SplashScreen(
+                        isDarkTheme = isDark.value,
+                        navController = navController,
+                    )
+                }
+
                 composable("gameList") { navBackStackEntry ->
                     val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
                     val gameListViewModel: GameListViewModel = viewModel("GameListViewModel", factory)
