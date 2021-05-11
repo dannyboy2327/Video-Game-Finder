@@ -4,6 +4,8 @@ sealed class Screen(
     val route: String
 ) {
 
+    object Splash: Screen("splash")
+
     object GameList: Screen("gameList")
 
     object GameDetails: Screen("gameDetails")
