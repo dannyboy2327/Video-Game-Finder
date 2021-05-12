@@ -1,8 +1,10 @@
-package com.anomalydev.videogamefinder.framework.presentation.ui.components
+package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -10,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,8 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomalydev.videogamefinder.R
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.CircularLoadingBar
 import com.anomalydev.videogamefinder.util.Constants
 import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
+import com.google.accompanist.imageloading.ImageLoadState
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 
@@ -29,24 +35,22 @@ fun GameImageHeading(
 
     var ratingValue: Float = rememberSaveable { game.rating }
 
+    val painter = rememberCoilPainter(
+        request = game.background_image,
+        fadeIn = true,
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        CoilImage(
-            data = game.background_image,
+        Image(
+            painter = painter,
             contentDescription = game.name,
-            fadeIn = true,
-            error = {
-                Image(
-                    painter = painterResource(id = R.drawable.empty_plate),
-                    contentDescription = "Image not viewable"
-                )
-            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         Column(

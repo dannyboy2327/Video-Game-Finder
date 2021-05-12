@@ -22,12 +22,19 @@ import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.R
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun GameCard(
     game: Game,
     onClick: () -> Unit,
 ) {
+
+    val painter = rememberCoilPainter(
+        request = game.background_image,
+        fadeIn = true,
+    )
+
     Card(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
@@ -43,13 +50,9 @@ fun GameCard(
         elevation = 8.dp,
     ) {
         Box {
-            CoilImage(
-                data = game.background_image,
+            Image(
+                painter = painter,
                 contentDescription = game.name,
-                fadeIn = true,
-                error = {
-                    Image(painter = painterResource(id = R.drawable.empty_plate), contentDescription = "Image not viewable")
-                },
                 modifier = Modifier
                     .fillMaxHeight(),
                 contentScale = ContentScale.Crop
