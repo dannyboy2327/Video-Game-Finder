@@ -8,8 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.anomalydev.videogamefinder.R
 
 @Composable
 fun GameViewLoading() {
@@ -40,11 +43,12 @@ fun GameViewLoading() {
         ) {
             Text(
                 text = "L",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.0..0.14 -> 32.sp
-                    else -> 24.sp
+                    in 0.0..0.14 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -53,11 +57,12 @@ fun GameViewLoading() {
             )
             Text(
                 text = "o",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.14..0.28 -> 32.sp
-                    else -> 24.sp
+                    in 0.14..0.28 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -66,11 +71,12 @@ fun GameViewLoading() {
             )
             Text(
                 text = "a",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.28..0.42 -> 32.sp
-                    else -> 24.sp
+                    in 0.28..0.42 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -79,11 +85,12 @@ fun GameViewLoading() {
             )
             Text(
                 text = "d",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.42..0.56 -> 32.sp
-                    else -> 24.sp
+                    in 0.42..0.56 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -92,11 +99,12 @@ fun GameViewLoading() {
             )
             Text(
                 text = "i",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.56..0.7 -> 32.sp
-                    else -> 24.sp
+                    in 0.56..0.7 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -105,11 +113,12 @@ fun GameViewLoading() {
             )
             Text(
                 text = "n",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.7..0.84 -> 32.sp
-                    else -> 24.sp
+                    in 0.7..0.84 -> 48.sp
+                    else -> 32.sp
                 },
                 modifier = Modifier
                     .padding(
@@ -118,18 +127,20 @@ fun GameViewLoading() {
             )
             Text(
                 text = "g",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = when (time.value) {
-                    in 0.84..0.98 -> 32.sp
-                    else -> 24.sp
+                    in 0.84..0.98 -> 48.sp
+                    else -> 32.sp
                 },
             )
             Text(
                 text = "...",
-                style = MaterialTheme.typography.h3,
+                style = MaterialTheme.typography.h1,
+                fontFamily = FontFamily(Font(R.font.debug)),
                 color = MaterialTheme.colors.onPrimary,
-                fontSize = 24.sp,
+                fontSize = 32.sp,
             )
         }
     }
