@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameImageBody
-import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameImageHeading
 
 @Composable
 fun GameView(
