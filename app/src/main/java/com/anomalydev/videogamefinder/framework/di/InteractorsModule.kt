@@ -1,5 +1,6 @@
 package com.anomalydev.videogamefinder.framework.di
 
+import com.anomalydev.videogamefinder.business.interactors.game.BookmarkState
 import com.anomalydev.videogamefinder.business.interactors.game.GetGame
 import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
@@ -60,6 +61,18 @@ object InteractorsModule {
             gameService = gameService,
             entityMapper = entityMapper,
             dtoMapper = dtoMapper,
+        )
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideBookmarkState(
+        gameDao: GameDao,
+        entityMapper: GameEntityMapper,
+    ): BookmarkState{
+        return BookmarkState(
+            gameDao = gameDao,
+            entityMapper = entityMapper,
         )
     }
 }
