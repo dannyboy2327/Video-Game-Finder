@@ -1,5 +1,6 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -7,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameView
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view.GameViewLoading
+import com.anomalydev.videogamefinder.util.Constants.TAG
 
 @Composable
 fun GameDetailsScreen(
@@ -42,7 +44,12 @@ fun GameDetailsScreen(
                     //TODO("Show Invalid Recipe")
                 } else {
                     game?.let { game ->
-                        GameView(game = game)
+                        GameView(
+                            game = game,
+                            onTriggerFavorite = {
+                                viewModel.onTriggerEvent(GameDetailsEvents.BookmarkStateEvent(it))
+                            }
+                        )
                     }
                 }
             }

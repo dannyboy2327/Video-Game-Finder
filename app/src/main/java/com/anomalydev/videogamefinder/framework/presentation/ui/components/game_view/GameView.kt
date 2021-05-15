@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.business.domain.model.Game
-import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameImageBody
 
 @Composable
 fun GameView(
     game: Game,
+    onTriggerFavorite: (Game) -> Unit,
 ) {
 
     Column(
@@ -26,6 +26,7 @@ fun GameView(
 
         GameImageBody(
             game = game,
+            onTriggerFavorite = onTriggerFavorite
         )
 
         Divider(

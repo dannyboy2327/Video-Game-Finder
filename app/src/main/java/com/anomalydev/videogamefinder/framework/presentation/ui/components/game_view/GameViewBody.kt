@@ -1,5 +1,6 @@
-package com.anomalydev.videogamefinder.framework.presentation.ui.components
+package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -7,9 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,10 +23,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.util.Constants.TAG
 
 @Composable
 fun GameImageBody(
     game: Game,
+    onTriggerFavorite: (Game) -> Unit,
 ) {
 
     val expanded = remember { mutableStateOf(false) }
@@ -121,22 +124,24 @@ fun GameImageBody(
     ) {
 
         Button(
-            onClick = { },
+            onClick = {
+                onTriggerFavorite(game)
+            },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.background,
             ),
             border = BorderStroke(1.dp, MaterialTheme.colors.onPrimary)
         ) {
             Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = "Add",
+                imageVector = if (game.isFavorite) Icons.Outlined.BookmarkRemove else Icons.Filled.BookmarkAdd,
+                contentDescription = if (game.isFavorite) "Remove" else "Favorite",
                 tint = MaterialTheme.colors.onPrimary,
                 modifier = Modifier
                     .align(Alignment.CenterVertically),
             )
 
             Text(
-                text = "Favorites",
+                text = if (game.isFavorite) "Remove" else "Favorite",
                 color = MaterialTheme.colors.onPrimary,
                 style = MaterialTheme.typography.button,
                 fontSize = 16.sp,
