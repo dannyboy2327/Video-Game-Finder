@@ -30,7 +30,7 @@ fun GameList(
                 cardHeight = 180.dp,
                 cardWidth = 120.dp,
             )
-        } else if (games.isEmpty() ) {
+        } else if (games.isEmpty()) {
             Empty()
         } else {
             LazyRow {
