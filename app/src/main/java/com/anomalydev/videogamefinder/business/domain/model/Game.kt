@@ -15,6 +15,7 @@ data class Game(
     val rating_top: Int,
     val ratings: List<Rating>,
     val playtime: Int,
+    val isFavorite: Boolean,
 )
 
 data class Rating(

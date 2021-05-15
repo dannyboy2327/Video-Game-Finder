@@ -27,11 +27,18 @@ class GetGame(
 
             emit(DataState.loading<Game>())
 
-            val networkGame = getGameFromNetwork(key = key, gameId = gameId)
-            gameDao.insertGame(
-               entityMapper.mapFromDomainModel(networkGame)
-            )
+            // Get the game by ID
+            val gameEntity = gameDao.getGameById(gameId)
 
+            // Check if the game doesn't have all the properties
+            if (gameEntity?.description!!.isBlank() || gameEntity.website.isBlank()) {
+                val networkGame = getGameFromNetwork(key = key, gameId = gameId)
+                gameDao.insertGame(
+                    entityMapper.mapFromDomainModel(networkGame)
+                )
+            }
+
+            // Get the game from the cache
             val game = getGameFromCache(gameId)
 
             if (game != null) {

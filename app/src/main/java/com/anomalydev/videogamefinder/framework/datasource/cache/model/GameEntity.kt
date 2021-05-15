@@ -41,4 +41,7 @@ data class GameEntity(
 
     @ColumnInfo(name = "playtime")
     var playtime: Int,
+
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Boolean,
 )

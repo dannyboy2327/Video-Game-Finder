@@ -1,9 +1,6 @@
 package com.anomalydev.videogamefinder.framework.datasource.cache.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.anomalydev.videogamefinder.framework.datasource.cache.model.GameEntity
 import com.anomalydev.videogamefinder.util.Constants
 import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
@@ -34,6 +31,10 @@ interface GameDao {
     // Will delete a game by it's id
     @Query("DELETE FROM games WHERE id = :primaryKey")
     suspend fun deleteGame(primaryKey: Int): Int
+
+    // Will update a game
+    @Update
+    suspend fun updateGame(game: GameEntity): Int
 
     /**
      *  Retrieve games for a page

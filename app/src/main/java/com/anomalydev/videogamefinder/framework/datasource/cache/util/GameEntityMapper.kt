@@ -23,6 +23,7 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
             rating_top = model.rating_top,
             ratings = model.ratings,
             playtime = model.playtime,
+            isFavorite = model.isFavorite,
         )
     }
 
@@ -42,6 +43,7 @@ class GameEntityMapper: DomainMapper<GameEntity, Game> {
             rating_top = domainModel.rating_top,
             ratings = domainModel.ratings,
             playtime = domainModel.playtime,
+            isFavorite = domainModel.isFavorite,
         )
     }
 
