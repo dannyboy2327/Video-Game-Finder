@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.business.interactors.game.BookmarkState
 import com.anomalydev.videogamefinder.business.interactors.game.GetGame
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.util.GameDetailsViewModelConstants
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.util.GameDetailsViewModelConstants.GAME_ID_KEY
@@ -23,6 +24,7 @@ import javax.inject.Named
 @HiltViewModel
 class GameDetailsViewModel @Inject constructor(
     private val getGame: GetGame,
+    private val bookmarkState: BookmarkState,
     @Named("auth_key") private val key: String,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
@@ -48,6 +50,9 @@ class GameDetailsViewModel @Inject constructor(
                             getGame(event.id)
                         }
                     }
+                    is GameDetailsEvents.BookmarkStateEvent -> {
+                        setBookmarkState(event.game)
+                    }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "onTriggerEvent: $e, ${e.cause}")
@@ -56,7 +61,7 @@ class GameDetailsViewModel @Inject constructor(
         }
     }
 
-
+    // 1st case
     private fun getGame(id: Int) {
         getGame.execute(
             gameId = id,
@@ -72,6 +77,26 @@ class GameDetailsViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "getGame: $error")
+                // TODO("Handle the error")
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    // 2nd case
+    private fun setBookmarkState(game: Game) {
+        Log.d(TAG, "setBookmarkState: triggered")
+        bookmarkState.execute(
+            game = game,
+        ).onEach { dataState ->
+
+            dataState.data?.let { data ->
+                this.game.value = data
+                savedStateHandle.set(GAME_ID_KEY, data.id)
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "setBookmarkState: $error")
                 // TODO("Handle the error")
             }
 
