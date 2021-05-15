@@ -12,7 +12,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
         return Game(
             id = model.id,
             name = model.name,
-            description = DescriptionUtil.removeTagFromDescriptionString(model.description?: "Not available"),
+            description = DescriptionUtil.removeTagFromDescriptionString(model.description?: ""),
             released = model.released?: "",
             updated = DateUtil.removeTimeFromDateString(model.updated),
             background_image = model.background_image?: "",
@@ -21,6 +21,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
             rating_top = model.rating_top,
             ratings = model.ratings,
             playtime = model.playtime?: 0,
+            isFavorite = false,
         )
     }
 
@@ -29,7 +30,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
             id = domainModel.id,
             name = domainModel.name,
             description = domainModel.description,
-            released = domainModel.released?: "Unknown",
+            released = domainModel.released,
             updated = DateUtil.removeTimeFromDateString(domainModel.updated),
             background_image = domainModel.background_image?: "",
             website = domainModel.website,
