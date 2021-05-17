@@ -33,6 +33,11 @@ class GameDaoFake(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateGame(game: GameEntity): Int {
+        appDatabaseFake.games[0] = game
+        return 1 // return success
+    }
+
     override suspend fun searchGames(query: String, page: Int, pageSize: Int): List<GameEntity> {
         return appDatabaseFake.games
     }
