@@ -80,7 +80,7 @@ class RestoreGamesTest {
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(MockWebServerResponses.gameListResponse)
+                .setBody(MockWebServerResponses.GAME_LIST_RESPONSE)
         )
 
         assert(gameDaoFake.getAllGames(page = 1, pageSize = Constants.PAGE_SIZE,).isEmpty())

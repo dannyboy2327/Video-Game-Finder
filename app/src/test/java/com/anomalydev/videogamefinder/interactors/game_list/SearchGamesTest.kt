@@ -73,7 +73,7 @@ class SearchGamesTest {
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(MockWebServerResponses.gameListResponse)
+                .setBody(MockWebServerResponses.GAME_LIST_RESPONSE)
         )
 
         // confirm the cache is empty to start

@@ -27,17 +27,18 @@ class BookmarkState(
             )
 
             if (updatedGame.isFavorite != game.isFavorite) {
-                Log.d(TAG, "execute: Updated game: ${updatedGame.isFavorite} and ${game.isFavorite}")
                 emit(DataState.success(updatedGame))
             } else {
                 throw Exception("Updated game and old game have same isFavorite state")
             }
         } catch (e: Exception){
-            Log.e(TAG, "execute: ${e.message}")
             emit(DataState.error<Game>(e.message?: "Unknown"))
         }
     }
 
+    /**
+     * Helper function to a game's isFavorite field to it's correct state
+     */
     private fun setBookmarkState(game: Game): Game {
         return Game(
             id = game.id,
