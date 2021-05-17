@@ -4,6 +4,7 @@ import android.util.Log
 import com.anomalydev.videogamefinder.business.domain.model.Game
 import com.anomalydev.videogamefinder.business.domain.state.DataState
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDao
+import com.anomalydev.videogamefinder.framework.datasource.cache.model.GameEntity
 import com.anomalydev.videogamefinder.framework.datasource.cache.util.GameEntityMapper
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
@@ -28,29 +29,50 @@ class GetGame(
             emit(DataState.loading<Game>())
 
             // Get the game by ID
-            val gameEntity = gameDao.getGameById(gameId)
-
-            // Check if the game doesn't have all the properties
-            if (gameEntity?.description!!.isBlank() || gameEntity.website.isBlank()) {
-                val networkGame = getGameFromNetwork(key = key, gameId = gameId)
-                gameDao.insertGame(
-                    entityMapper.mapFromDomainModel(networkGame)
-                )
-            }
-
-            // Get the game from the cache
-            val game = getGameFromCache(gameId)
+            var game = getGameFromCache(gameId)
 
             if (game != null) {
-                emit(DataState.success(game))
+                if (game.description.isNotBlank() && game.website.isNotBlank()) {
+                    emit(DataState.success(game))
+                } else {
+                    game = getGameFromNetwork(key = key, gameId = gameId)
+
+                    insertGameToCache(game)
+
+                    game = getGameFromCache(gameId)
+
+                    if (game != null) {
+                        emit(DataState.success(game))
+                    } else {
+                        throw Exception("Unable to get the game from the cache")
+                    }
+                }
             } else {
-                throw Exception("Unable to get the game from the cache")
+                game = getGameFromNetwork(key = key, gameId = gameId)
+
+                insertGameToCache(game)
+
+                game = getGameFromCache(gameId)
+
+                if (game != null) {
+                    emit(DataState.success(game))
+                } else {
+                    throw Exception("Unable to get the game from the cache")
+                }
             }
 
         } catch (e: Exception) {
-            Log.e(TAG, "execute: ${e.message}")
             emit(DataState.error<Game>(e.message?: "Unknown"))
         }
+    }
+
+    /**
+     * Helper function to insert game to cache
+     */
+    private suspend fun insertGameToCache(game: Game) {
+        gameDao.insertGame(
+            entityMapper.mapFromDomainModel(game)
+        )
     }
 
     /**
