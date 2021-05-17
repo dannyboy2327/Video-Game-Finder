@@ -82,32 +82,84 @@ class GetGameTest {
         mockWebServer.enqueue(
             MockResponse()
                 .setResponseCode(HttpURLConnection.HTTP_OK)
-                .setBody(MockWebServerResponses.gameListResponse)
+                .setBody(MockWebServerResponses.GAME_LIST_RESPONSE)
         )
 
         // confirm the cache is empty to start
         assert(gameDaoFake.getAllGames(1, 3).isEmpty())
 
-        // get recipes from network and insert into cache
-        val searchResult = searchGames.execute(DUMMY_KEY, 1, DUMMY_QUERY, 3).toList()
+        // get games from network and insert into cache
+        val searchResult = searchGames.execute(DUMMY_KEY, 1,DUMMY_QUERY, 3).toList()
 
-        // confirm the cache is no longer empty
+        // confirm cache is no longer empty
         assert(gameDaoFake.getAllGames(1, 3).isNotEmpty())
 
-        // run use case
+        // Condition the response
+        mockWebServer.enqueue(
+            MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(MockWebServerResponses.GAME_RESPONSE_WITH_ID_3498)
+        )
+
+        // get games from the cache
         val gameAsFlow = getGame.execute(GAME_ID, DUMMY_KEY).toList()
 
-        // first emission should be `loading`
+        // first emission should be loading
         assert(gameAsFlow[0].loading)
 
-        // second emission should be the recipe
+        // second emission should be the game
+        val game = gameAsFlow[1].data
+
+        // confirm the id matches
+        assert(game?.id == GAME_ID)
+
+        // confirm the game is of type Game
+        assert(game is Game)
+
+        // 3rd emission should be loading is false
+        assert(!gameAsFlow[1].loading)
+
+    }
+
+    /**
+     * 1. Try to get a game that does not exist in the cache
+     * Result should be:
+     * 1. Game is retrieved from network and inserted into cache
+     * 2. Game is returned as flow from cache
+     */
+    @Test
+    fun attemptGetNullGameFromCache_getByGameId(): Unit = runBlocking {
+
+        // condition the response
+        mockWebServer.enqueue(
+            MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(MockWebServerResponses.GAME_RESPONSE_WITH_ID_3498)
+        )
+
+        // confirm that the cache is empty
+        assert(gameDaoFake.getAllGames(1, 3).isEmpty())
+
+        // run the use case
+        val gameAsFlow = getGame.execute(
+            GAME_ID,
+            DUMMY_KEY,
+        ).toList()
+
+        // first emission should be loading
+        assert(gameAsFlow[0].loading)
+
+        // second emission should be a game
         val game = gameAsFlow[1].data
         assert(game?.id == GAME_ID)
 
-        // confirm it is actually a Recipe object
+        // confirm the game is in the cache now
+        assert(gameDaoFake.getGameById(GAME_ID)?.id == GAME_ID)
+
+        // confirm it is actually a game object
         assert(game is Game)
 
-        // 'loading' should be false now
+        // loading should be false now
         assert(!gameAsFlow[1].loading)
     }
 
