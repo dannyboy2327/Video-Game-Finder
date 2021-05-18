@@ -75,14 +75,21 @@ fun GameView(
                 .padding(
                     top = 8.dp,
                     start = 16.dp,
+                    bottom = 8.dp,
                 ),
             style = MaterialTheme.typography.h5,
         )
 
-        for (rating in game.ratings) {
+        for (i in game.ratings.indices) {
+            val rating = game.ratings[i]
             GameViewReview(
-                rating = rating,
+                title = rating.title,
+                percentValue = rating.percent,
+                percentValueMax = 100f,
+                ratingCount = rating.count,
+                animationDelay = i * 100,
             )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

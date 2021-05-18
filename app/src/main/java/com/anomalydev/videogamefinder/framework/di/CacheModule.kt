@@ -23,7 +23,6 @@ object CacheModule {
         return Room
             .databaseBuilder(app, GameDatabase::class.java, DATABASE_NAME)
             .addTypeConverter(Converter())
-            .fallbackToDestructiveMigrationOnDowngrade()
             .build()
     }
 

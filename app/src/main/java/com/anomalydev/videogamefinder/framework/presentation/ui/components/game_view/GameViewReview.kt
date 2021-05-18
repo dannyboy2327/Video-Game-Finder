@@ -1,68 +1,92 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
 
-import android.graphics.drawable.shapes.Shape
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.anomalydev.videogamefinder.business.domain.model.Rating
 
 @Composable
 fun GameViewReview(
-    rating: Rating,
+    title: String,
+    percentValue: Float,
+    percentValueMax: Float,
+    ratingCount: Int,
+    height: Dp = 24.dp,
+    animationDuration: Int = 1000,
+    animationDelay: Int = 0,
 ){
-    Row(
+
+    val animationPlayed = remember { mutableStateOf(false) }
+
+    val currentPercent = animateFloatAsState(
+        targetValue = if (animationPlayed.value) {
+            percentValue / percentValueMax
+        } else 0f,
+        animationSpec = tween(
+            durationMillis = animationDuration,
+            delayMillis = animationDelay,
+        )
+    )
+    
+    LaunchedEffect(key1 = true) {
+        animationPlayed.value = true
+    }
+
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(
-                top = 6.dp,
-                bottom = 16.dp,
                 start = 16.dp,
                 end = 16.dp,
             )
-            .background(
-                color = Color.Gray,
-                shape = CircleShape,
-            ),
     ) {
-        Text(
-            text = rating.title,
-            color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.body1,
-            fontSize = 14.sp,
-            modifier = Modifier
-                .fillMaxWidth(0.50f)
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp,
-                    start = 8.dp,
-                )
-        )
 
         Text(
-            text = rating.count.toString(),
-            color = MaterialTheme.colors.onPrimary,
-            style = MaterialTheme.typography.body2,
-            fontSize = 14.sp,
-            modifier = Modifier
-                .fillMaxWidth(0.50f)
-                .padding(
-                    top = 8.dp,
-                    bottom = 8.dp,
-                    end = 8.dp,
-                )
+            text = title,
+            style = MaterialTheme.typography.h6,
+            color = MaterialTheme.colors.onPrimary
         )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height)
+                .clip(CircleShape)
+                .background(MaterialTheme.colors.onBackground)
+        ){
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(currentPercent.value)
+                    .fillMaxHeight()
+                    .clip(CircleShape)
+                    .background(Color.Red)
+                    .padding(horizontal = 8.dp)
+            ) {
+                Text(
+                    text = (currentPercent.value * percentValueMax).toInt().toString(),
+                    style = MaterialTheme.typography.h6,
+                    color = MaterialTheme.colors.onPrimary
+                )
+            }
+        }
     }
-
 }
