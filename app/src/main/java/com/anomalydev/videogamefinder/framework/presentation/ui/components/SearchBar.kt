@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -35,26 +36,18 @@ fun SearchBar(
     Surface(
         modifier = Modifier
             .fillMaxWidth(),
+        color = MaterialTheme.colors.primary,
         elevation = 8.dp,
-        color = MaterialTheme.colors.primary
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
 
             val keyboardController = LocalSoftwareKeyboardController.current
 
             TextField(
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
-                    .padding(
-                        start = 8.dp,
-                        top = 6.dp,
-                        bottom = 8.dp,
-                        end = 8.dp,
-                    )
-                    .height(50.dp)
+                    .padding(8.dp)
+                    .clip(CircleShape)
                     .background(color = MaterialTheme.colors.background, shape = CircleShape),
                 value = query,
                 onValueChange = { newQuery ->
@@ -84,8 +77,6 @@ fun SearchBar(
                         keyboardController?.hide()
                     }
                 ),
-                shape = CircleShape,
-                maxLines = 1,
                 textStyle = TextStyle(
                     color = MaterialTheme.colors.onPrimary,
                     fontFamily = Coda,
@@ -95,6 +86,7 @@ fun SearchBar(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
+                singleLine = true,
             )
             IconButton(
                 modifier = Modifier
