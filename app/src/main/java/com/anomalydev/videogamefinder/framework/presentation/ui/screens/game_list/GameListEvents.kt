@@ -7,4 +7,6 @@ sealed class GameListEvents {
     object SearchNextPageEvent: GameListEvents()
 
     object RestoreStateEvent: GameListEvents()
+
+    object GetFavoriteGames: GameListEvents()
 }

@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                 navController = navController,
                 startDestination = Screen.Splash.route,
             ) {
-                composable("splash") { navBackStackEntry ->
+                composable("splash") {
                     SplashScreen(
                         isDarkTheme = isDark.value,
                         navController = navController,
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
 
-                composable("settings") { navBackStackEntry ->
+                composable("settings") {
                     Settings(
                         isDarkTheme = isDark.value,
                         onToggleTheme = { onToggleTheme() }

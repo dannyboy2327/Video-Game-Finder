@@ -66,6 +66,12 @@ interface GameDao {
     ): List<GameEntity>
 
     /**
+     * Retrieve favorite games
+     */
+    @Query("SELECT * FROM games WHERE isFavorite")
+    suspend fun getFavoriteGames(): List<GameEntity>
+
+    /**
      * Restore games after process death
      */
     @Query("""
