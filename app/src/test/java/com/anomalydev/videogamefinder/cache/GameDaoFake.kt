@@ -46,6 +46,10 @@ class GameDaoFake(
         return appDatabaseFake.games
     }
 
+    override suspend fun getFavoriteGames(): List<GameEntity> {
+        return appDatabaseFake.games.filter { it.isFavorite }
+    }
+
     override suspend fun restoreGames(query: String, page: Int, pageSize: Int): List<GameEntity> {
         return appDatabaseFake.games
     }
