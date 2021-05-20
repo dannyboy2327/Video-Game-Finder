@@ -2,6 +2,7 @@ package com.anomalydev.videogamefinder.framework.di
 
 import com.anomalydev.videogamefinder.business.interactors.game.BookmarkState
 import com.anomalydev.videogamefinder.business.interactors.game.GetGame
+import com.anomalydev.videogamefinder.business.interactors.game_list.GetFavoriteGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDao
@@ -33,6 +34,18 @@ object InteractorsModule {
             gameService = gameService,
             entityMapper = gameEntityMapper,
             dtoMapper = gameDtoMapper,
+        )
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetFavoriteGames(
+        gameDao: GameDao,
+        entityMapper: GameEntityMapper,
+    ): GetFavoriteGames {
+        return GetFavoriteGames(
+            gameDao = gameDao,
+            entityMapper = entityMapper,
         )
     }
 
