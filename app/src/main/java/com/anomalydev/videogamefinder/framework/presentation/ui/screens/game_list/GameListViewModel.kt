@@ -2,11 +2,15 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_li
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anomalydev.videogamefinder.business.domain.model.Game
+import com.anomalydev.videogamefinder.business.interactors.game_list.GetFavoriteGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
@@ -17,6 +21,8 @@ import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toCollection
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
@@ -25,9 +31,8 @@ import javax.inject.Named
 @HiltViewModel
 class GameListViewModel @Inject constructor(
     private val searchGames: SearchGames,
+    private val getFavoriteGames: GetFavoriteGames,
     private val restoreGames: RestoreGames,
-    private val gameService: GameService,
-    private val dtoMapper: GameDtoMapper,
     @Named("auth_key") private val key: String,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
@@ -35,8 +40,14 @@ class GameListViewModel @Inject constructor(
     // Used to receive the list of games
     val games: MutableState<List<Game>> = mutableStateOf(ArrayList())
 
+    // Used to receive the list of favorite games
+    val favoriteGames: MutableState<List<Game>> = mutableStateOf(listOf())
+
     // Used to set loading state of the app
     val loading: MutableState<Boolean> = mutableStateOf(false)
+
+    // Used to set loading state of favorite games
+    val loadingFavoriteGames: MutableState<Boolean> = mutableStateOf(false)
 
     // Used to search for new query or restore query
     val query: MutableState<String> = mutableStateOf("")
@@ -69,6 +80,7 @@ class GameListViewModel @Inject constructor(
             onTriggerEvent(GameListEvents.RestoreStateEvent)
         } else {
             onTriggerEvent(GameListEvents.SearchGamesEvent)
+            onTriggerEvent(GameListEvents.GetFavoriteGames)
         }
     }
 
@@ -90,6 +102,10 @@ class GameListViewModel @Inject constructor(
 
                     is GameListEvents.RestoreStateEvent -> {
                         restoreState()
+                    }
+
+                    is GameListEvents.GetFavoriteGames -> {
+                        getFavoriteGames()
                     }
                     else -> { }
                 }
@@ -171,6 +187,25 @@ class GameListViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "restoreState: $error")
+                // TODO("Handle the error")
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    // 4th use case
+    private fun getFavoriteGames(){
+        getFavoriteGames.execute().onEach { dataState ->
+
+            loadingFavoriteGames.value = dataState.loading
+
+            dataState.data?.let { list ->
+                Log.d(TAG, "getFavoriteGames: ${list.size}")
+                favoriteGames.value = list
+            }
+
+            dataState.error?.let { error ->
+                Log.e(TAG, "getFavoriteGames: $error")
                 // TODO("Handle the error")
             }
 
