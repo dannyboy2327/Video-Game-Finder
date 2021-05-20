@@ -12,6 +12,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anomalydev.videogamefinder.framework.presentation.theme.VideoGameFinderTheme
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.FavoriteGameList
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.GameList
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.SearchBar
 
@@ -25,9 +26,15 @@ fun GameListScreen(
     onNavigateToSettingsScreen: (String) -> Unit,
     ) {
 
+    viewModel.onTriggerEvent(GameListEvents.GetFavoriteGames)
+
     val games = viewModel.games.value
 
+    val favoriteGames = viewModel.favoriteGames.value
+
     val loading = viewModel.loading.value
+
+    val loadingFavoriteGames = viewModel.loadingFavoriteGames.value
 
     val query = viewModel.query.value
 
@@ -75,6 +82,24 @@ fun GameListScreen(
                         viewModel.onTriggerEvent(GameListEvents.SearchNextPageEvent)
                     },
                     onNavigateToGameDetailScreen = onNavigateToGameDetailScreen
+                )
+
+                if (favoriteGames.isNotEmpty()) {
+                    Text(
+                        text = "Favorite Games",
+                        color = MaterialTheme.colors.onBackground,
+                        modifier = Modifier
+                            .padding(
+                                top = 16.dp,
+                                start = 8.dp,
+                            ),
+                        style = MaterialTheme.typography.h5,
+                    )
+                }
+
+                FavoriteGameList(
+                    favoriteGames = favoriteGames,
+                    onNavigateToGameDetailScreen = onNavigateToGameDetailScreen,
                 )
             }
         }
