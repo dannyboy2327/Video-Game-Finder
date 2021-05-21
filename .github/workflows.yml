@@ -31,5 +31,5 @@ jobs:
         run: chmod +x ./gradlew
         
       - name: Build the app
-      # Will make sure an APK can be built and will run all the tests/verification of my project
+      # Will make sure an APK can be built and will run all the tests/verification of the project
         run: ./gradlew build
