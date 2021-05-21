@@ -31,7 +31,7 @@ object NetworkModule {
     @Provides
     @Named("auth_key")
     fun provideAuthToken(): String {
-        return BuildConfig.GAMES_API_ACCESS_KEY
+        return BuildConfig.games_api_access_key
     }
 
     @Singleton
