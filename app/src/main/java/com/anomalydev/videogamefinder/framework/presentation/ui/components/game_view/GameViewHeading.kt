@@ -2,9 +2,7 @@ package com.anomalydev.videogamefinder.framework.presentation.ui.components.game
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -12,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -20,13 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomalydev.videogamefinder.R
 import com.anomalydev.videogamefinder.business.domain.model.Game
-import com.anomalydev.videogamefinder.framework.presentation.ui.components.CircularLoadingBar
 import com.anomalydev.videogamefinder.util.Constants
-import com.google.accompanist.coil.CoilImage
 import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.imageloading.ImageLoadState
-import com.gowtham.ratingbar.RatingBar
-import com.gowtham.ratingbar.RatingBarStyle
 
 @Composable
 fun GameImageHeading(
@@ -73,18 +65,6 @@ fun GameImageHeading(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                RatingBar(
-                    value = ratingValue,
-                    size = 12.dp,
-                    onRatingChanged = {
-                        ratingValue = it
-                        Log.d(Constants.TAG, "GameView: $it")
-                    },
-                    activeColor = Color.Red,
-                    inactiveColor = Color.White,
-                    ratingBarStyle = RatingBarStyle.Normal,
-                )
-
                 Icon(
                     painter = painterResource(id = R.drawable.ic_circle),
                     contentDescription = "",
@@ -131,7 +111,6 @@ fun GameImageHeading(
                         )
                 )
             }
-
         }
     }
 }
