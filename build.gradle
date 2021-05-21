@@ -2,14 +2,14 @@
 buildscript {
     ext {
         hilt_version = '2.35.1'
-        compose_version = '1.0.0-beta06'
+        compose_version = '1.0.0-beta07'
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
+        classpath 'com.android.tools.build:gradle:7.0.0-beta02'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "de.mannodermaus.gradle.plugins:android-junit5:1.7.1.1"
