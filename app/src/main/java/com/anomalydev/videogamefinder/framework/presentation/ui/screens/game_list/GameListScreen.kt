@@ -95,12 +95,12 @@ fun GameListScreen(
                             ),
                         style = MaterialTheme.typography.h5,
                     )
-                }
 
-                FavoriteGameList(
-                    favoriteGames = favoriteGames,
-                    onNavigateToGameDetailScreen = onNavigateToGameDetailScreen,
-                )
+                    FavoriteGameList(
+                        favoriteGames = favoriteGames,
+                        onNavigateToGameDetailScreen = onNavigateToGameDetailScreen,
+                    )
+                }
             }
         }
     }
