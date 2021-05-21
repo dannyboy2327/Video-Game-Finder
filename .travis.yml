@@ -9,5 +9,3 @@ android:
     - android-30
   licenses:
     - '.+'
-script:
-  - ./gradlew build connectedCheck
