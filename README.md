@@ -12,7 +12,7 @@ The purpose of this application is to demonstrate my android development skills.
 This application consists of libraries and best practices such as:
   1. Jetpack Compose:heavy_check_mark:
   2. MVVM/MVI architecture (clean architecture):heavy_check_mark:
-  3. Retrofit 2 (+ GSON):heavy_check_mark:
+  3. Retrofit(+ GSON):heavy_check_mark:
   4. Dagger Hilt:heavy_check_mark:
   5. Room (local database):heavy_check_mark:
   6. Unit testing (with Junit 5 and Mockweb server):heavy_check_mark:
@@ -27,7 +27,19 @@ This application consists of libraries and best practices such as:
 
 ## Framework
 **Built with**
-- [Android](https://developer.android.com/guide/platform):iphone:
+- [Jetpack Compose](https://developer.android.com/jetpack/compose)
+- [Retrofit](https://square.github.io/retrofit/)
+- [Dagger-Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- [Room](https://developer.android.com/training/data-storage/room)
+- [Junit 5](https://github.com/mannodermaus/android-junit5)
+- [Coil](https://github.com/google/accompanist/tree/main/coil)
+- [Android Jetpack](https://developer.android.com/jetpack)
+- [Connectivity Manager](https://developer.android.com/guide/topics/connectivity)
+- [Gson](https://github.com/square/retrofit/tree/master/retrofit-converters/gson)
+- [MockwebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
 
 ## API Reference
 - [RAWG Video Games Database API](https://rawg.io/apidocs):computer:
+
+## License
+    Copyright 2021 Daniel Toriz Valdovinos
