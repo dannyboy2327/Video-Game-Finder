@@ -1,5 +1,10 @@
 # :video_game:Video Game Finder:video_game:
 Video Game Finder is an android application that will allow users to browse a a variety of video games.
+
+<p align="center">
+  <img src="images/ic_launcher.png" width="225" />
+</p>
+
 This application includes:
 - Search bar to find a specific game:heavy_check_mark:
 - Option to favorite a game to view whenever you would like:heavy_check_mark:
