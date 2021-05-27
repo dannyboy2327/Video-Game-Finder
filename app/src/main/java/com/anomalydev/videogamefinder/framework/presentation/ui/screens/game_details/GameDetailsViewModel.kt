@@ -12,6 +12,7 @@ import com.anomalydev.videogamefinder.business.interactors.game.GetGame
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.util.GameDetailsViewModelConstants
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.util.GameDetailsViewModelConstants.GAME_ID_KEY
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListEvents
+import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -34,6 +35,8 @@ class GameDetailsViewModel @Inject constructor(
     val loading: MutableState<Boolean> = mutableStateOf(false)
 
     val onLoad: MutableState<Boolean> = mutableStateOf(false)
+
+    val dialogQueue = DialogQueue()
 
     init {
         savedStateHandle.get<Int>(GAME_ID_KEY)?.let { gameId ->
@@ -77,7 +80,10 @@ class GameDetailsViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "getGame: $error")
-                // TODO("Handle the error")
+                dialogQueue.appendErrorMessage(
+                    title = "Error",
+                    description = error
+                )
             }
 
         }.launchIn(viewModelScope)
@@ -97,7 +103,10 @@ class GameDetailsViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "setBookmarkState: $error")
-                // TODO("Handle the error")
+                dialogQueue.appendErrorMessage(
+                    title = "Error",
+                    description = error
+                )
             }
 
         }.launchIn(viewModelScope)

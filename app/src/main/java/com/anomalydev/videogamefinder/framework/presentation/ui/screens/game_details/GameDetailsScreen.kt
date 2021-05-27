@@ -31,8 +31,11 @@ fun GameDetailsScreen(
 
         val game = viewModel.game.value
 
+        val dialogQueue = viewModel.dialogQueue
+
         VideoGameFinderTheme(
             darkTheme = isDarkTheme,
+            dialogQueue = dialogQueue.queue.value
         ) {
             Box(
                 modifier = Modifier

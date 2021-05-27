@@ -16,6 +16,7 @@ import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.GameListViewModelConstants
+import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
 import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,8 @@ class GameListViewModel @Inject constructor(
 
     // Used to restore gameListPosition num
     var gameListScrollPosition = 0
+
+    val dialogQueue = DialogQueue()
 
     init {
 
@@ -136,7 +139,10 @@ class GameListViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "newGameSearch: $error")
-                // TODO("Handle the error")
+                dialogQueue.appendErrorMessage(
+                    title = "Error",
+                    description = error
+                )
             }
 
         }.launchIn(viewModelScope)
@@ -164,7 +170,10 @@ class GameListViewModel @Inject constructor(
 
                     dataState.error?.let { error ->
                         Log.e(TAG, "nextSearchPage: $error")
-                        // TODO("Handle the error")
+                        dialogQueue.appendErrorMessage(
+                            title = "Error",
+                            description = error
+                        )
                     }
 
                 }.launchIn(viewModelScope)
@@ -187,7 +196,10 @@ class GameListViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "restoreState: $error")
-                // TODO("Handle the error")
+                dialogQueue.appendErrorMessage(
+                    title = "Error",
+                    description = error
+                )
             }
 
         }.launchIn(viewModelScope)
@@ -206,7 +218,10 @@ class GameListViewModel @Inject constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "getFavoriteGames: $error")
-                // TODO("Handle the error")
+                dialogQueue.appendErrorMessage(
+                    title = "Error",
+                    description = error
+                )
             }
 
         }.launchIn(viewModelScope)
