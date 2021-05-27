@@ -40,8 +40,11 @@ fun GameListScreen(
 
     val page = viewModel.page.value
 
+    val dialogQueue  = viewModel.dialogQueue
+
     VideoGameFinderTheme(
         darkTheme = isDarkTheme,
+        dialogQueue = dialogQueue.queue.value
     ) {
         Scaffold(
             topBar = {
