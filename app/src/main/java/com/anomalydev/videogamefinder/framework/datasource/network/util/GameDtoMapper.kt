@@ -32,7 +32,7 @@ class GameDtoMapper: DomainMapper<GameDto, Game> {
             description = domainModel.description,
             released = domainModel.released,
             updated = DateUtil.removeTimeFromDateString(domainModel.updated),
-            background_image = domainModel.background_image?: "",
+            background_image = domainModel.background_image,
             website = domainModel.website,
             rating = domainModel.rating,
             rating_top = domainModel.rating_top,
