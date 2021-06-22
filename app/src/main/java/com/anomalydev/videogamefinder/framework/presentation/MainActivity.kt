@@ -13,6 +13,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.HiltViewModelFactory
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
                 composable("gameList") { navBackStackEntry ->
                     val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-                    val gameListViewModel: GameListViewModel = viewModel("GameListViewModel", factory)
+                    val gameListViewModel: GameListViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameListViewModel", factory)
                     GameListScreen(
                         isDarkTheme = isDark.value,
                         viewModel = gameListViewModel,
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     arguments = listOf(navArgument("gameId") { type = NavType.IntType})
                 ) { navBackStackEntry ->
                     val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-                    val gameDetailsViewModel: GameDetailsViewModel = viewModel("GameDetailsViewModel", factory)
+                    val gameDetailsViewModel: GameDetailsViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameDetailsViewModel", factory)
                     GameDetailsScreen(
                         isDarkTheme = isDark.value,
                         viewModel = gameDetailsViewModel,
