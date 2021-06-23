@@ -13,6 +13,7 @@ import com.anomalydev.videogamefinder.util.Constants.TAG
 @Composable
 fun GameDetailsScreen(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     viewModel: GameDetailsViewModel,
     gameId: Int?,
 ) {
@@ -35,6 +36,7 @@ fun GameDetailsScreen(
 
         VideoGameFinderTheme(
             darkTheme = isDarkTheme,
+            isNetworkAvailable = isNetworkAvailable,
             dialogQueue = dialogQueue.queue.value
         ) {
             Box(

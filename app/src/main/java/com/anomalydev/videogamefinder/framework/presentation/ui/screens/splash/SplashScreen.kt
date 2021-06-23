@@ -15,11 +15,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     navController: NavController,
 ) {
 
     VideoGameFinderTheme(
         darkTheme = isDarkTheme,
+        isNetworkAvailable = isNetworkAvailable,
     ) {
         SplashScreenContent()
         LaunchedEffect(

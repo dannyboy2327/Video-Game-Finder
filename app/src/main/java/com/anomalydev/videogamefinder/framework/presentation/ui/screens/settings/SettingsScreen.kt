@@ -15,10 +15,12 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Night
 @Composable
 fun Settings(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     onToggleTheme: () -> Unit,
 ) {
     VideoGameFinderTheme(
         darkTheme = isDarkTheme,
+        isNetworkAvailable = isNetworkAvailable,
     ) {
         Scaffold(
             topBar = {

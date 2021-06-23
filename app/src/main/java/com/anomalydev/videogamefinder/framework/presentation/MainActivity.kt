@@ -2,6 +2,7 @@ package com.anomalydev.videogamefinder.framework.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
@@ -24,16 +25,32 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_lis
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.splash.SplashScreen
+import com.anomalydev.videogamefinder.framework.presentation.util.ConnectivityManager
+import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var connectivityManager: ConnectivityManager
+
+    override fun onStart() {
+        super.onStart()
+        connectivityManager.registerConnectionObserver(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        connectivityManager.unregisterConnectionObserver(this)
+    }
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -47,6 +64,10 @@ class MainActivity : ComponentActivity() {
         observeDataStore()
 
         setContent {
+            // Used to check for internet availability
+            val isInternetAvailable = connectivityManager.isNetworkAvailable.value
+            Log.d(TAG, "onCreate: Is internet available? $isInternetAvailable")
+
             // Used to remember nav state in the graph
             val navController = rememberNavController()
 
@@ -58,6 +79,7 @@ class MainActivity : ComponentActivity() {
                 composable("splash") {
                     SplashScreen(
                         isDarkTheme = isDark.value,
+                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                         navController = navController,
                     )
                 }
@@ -67,6 +89,7 @@ class MainActivity : ComponentActivity() {
                     val gameListViewModel: GameListViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameListViewModel", factory)
                     GameListScreen(
                         isDarkTheme = isDark.value,
+                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                         viewModel = gameListViewModel,
                         onNavigateToGameDetailScreen = navController::navigate,
                         onNavigateToSettingsScreen = navController::navigate,
@@ -81,6 +104,7 @@ class MainActivity : ComponentActivity() {
                     val gameDetailsViewModel: GameDetailsViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameDetailsViewModel", factory)
                     GameDetailsScreen(
                         isDarkTheme = isDark.value,
+                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                         viewModel = gameDetailsViewModel,
                         gameId = navBackStackEntry.arguments?.getInt("gameId"),
                     )
@@ -89,6 +113,7 @@ class MainActivity : ComponentActivity() {
                 composable("settings") {
                     Settings(
                         isDarkTheme = isDark.value,
+                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                         onToggleTheme = { onToggleTheme() }
                     )
                 }
