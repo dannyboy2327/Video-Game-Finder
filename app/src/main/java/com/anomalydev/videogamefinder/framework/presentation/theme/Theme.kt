@@ -3,6 +3,7 @@ package com.anomalydev.videogamefinder.framework.presentation.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.anomalydev.videogamefinder.framework.presentation.ui.components.ConnectivityMonitor
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.dialog.GenericDialog
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.dialog.GenericDialogInfo
 import com.anomalydev.videogamefinder.framework.presentation.ui.components.dialog.NegativeAction
@@ -53,6 +55,7 @@ private val LightColorPalette = lightColors(
 @Composable
 fun VideoGameFinderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    isNetworkAvailable: Boolean,
     dialogQueue: Queue<GenericDialogInfo>? = null,
     content: @Composable () -> Unit
 ) {
@@ -71,7 +74,10 @@ fun VideoGameFinderTheme(
             .fillMaxSize()
             .background(color = if (!darkTheme) Grey700 else Grey900)
         ) {
-            content()
+            Column {
+                ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
+                content()
+            }
             dialogQueue?.let {
                 ProcessDialogQueue(dialogQueue = it)
             }
