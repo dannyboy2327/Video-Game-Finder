@@ -21,6 +21,7 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.components.Searc
 @Composable
 fun GameListScreen(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     viewModel: GameListViewModel,
     onNavigateToGameDetailScreen: (String) -> Unit,
     onNavigateToSettingsScreen: (String) -> Unit,
@@ -44,6 +45,7 @@ fun GameListScreen(
 
     VideoGameFinderTheme(
         darkTheme = isDarkTheme,
+        isNetworkAvailable = isNetworkAvailable,
         dialogQueue = dialogQueue.queue.value
     ) {
         Scaffold(
