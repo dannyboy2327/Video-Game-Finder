@@ -17,6 +17,7 @@ import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.G
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.util.GameListViewModelConstants
 import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
+import com.anomalydev.videogamefinder.framework.presentation.util.ConnectivityManager
 import com.anomalydev.videogamefinder.util.Constants.PAGE_SIZE
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,7 @@ class GameListViewModel @Inject constructor(
     private val searchGames: SearchGames,
     private val getFavoriteGames: GetFavoriteGames,
     private val restoreGames: RestoreGames,
+    private val connectivityManager: ConnectivityManager,
     @Named("auth_key") private val key: String,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
@@ -129,6 +131,7 @@ class GameListViewModel @Inject constructor(
             page = page.value,
             pageSize = PAGE_SIZE,
             query = query.value,
+            isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
         ).onEach { dataState ->
 
             loading.value = dataState.loading
@@ -160,6 +163,7 @@ class GameListViewModel @Inject constructor(
                     page = page.value,
                     pageSize = PAGE_SIZE,
                     query = query.value,
+                    isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                 ).onEach { dataState ->
 
                     loading.value = dataState.loading

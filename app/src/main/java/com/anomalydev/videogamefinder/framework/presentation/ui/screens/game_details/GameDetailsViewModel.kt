@@ -13,6 +13,7 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_det
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.util.GameDetailsViewModelConstants.GAME_ID_KEY
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListEvents
 import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
+import com.anomalydev.videogamefinder.framework.presentation.util.ConnectivityManager
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -26,6 +27,7 @@ import javax.inject.Named
 class GameDetailsViewModel @Inject constructor(
     private val getGame: GetGame,
     private val bookmarkState: BookmarkState,
+    private val connectivityManager: ConnectivityManager,
     @Named("auth_key") private val key: String,
     private val savedStateHandle: SavedStateHandle,
 ): ViewModel() {
@@ -69,6 +71,7 @@ class GameDetailsViewModel @Inject constructor(
         getGame.execute(
             gameId = id,
             key = key,
+            isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
         ).onEach { dataState ->
 
             loading.value = dataState.loading
