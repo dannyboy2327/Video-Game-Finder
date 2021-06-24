@@ -23,6 +23,7 @@ class GetGame(
     fun execute(
         gameId: Int,
         key: String,
+        isNetworkAvailable: Boolean,
     ): Flow<DataState<Game>> = flow {
         try {
 
@@ -35,9 +36,12 @@ class GetGame(
                 if (game.description.isNotBlank() && game.website.isNotBlank()) {
                     emit(DataState.success(game))
                 } else {
-                    game = getGameFromNetwork(key = key, gameId = gameId)
 
-                    insertGameToCache(game)
+                    if (isNetworkAvailable) {
+                        game = getGameFromNetwork(key = key, gameId = gameId)
+
+                        insertGameToCache(game)
+                    }
 
                     game = getGameFromCache(gameId)
 
@@ -48,9 +52,11 @@ class GetGame(
                     }
                 }
             } else {
-                game = getGameFromNetwork(key = key, gameId = gameId)
+                if (isNetworkAvailable) {
+                    game = getGameFromNetwork(key = key, gameId = gameId)
 
-                insertGameToCache(game)
+                    insertGameToCache(game)
+                }
 
                 game = getGameFromCache(gameId)
 

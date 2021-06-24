@@ -21,20 +21,22 @@ class SearchGames(
         page: Int,
         query: String,
         pageSize: Int,
+        isNetworkAvailable: Boolean,
     ): Flow<DataState<List<Game>>> = flow {
         try {
             emit(DataState.loading<List<Game>>())
 
-            // TODO("Check if there is an internet connection")
-            val games = getGamesFromNetwork(
-                key = key,
-                page = page,
-                query = query,
-                pageSize = pageSize
-            )
+            if (isNetworkAvailable) {
+                val games = getGamesFromNetwork(
+                    key = key,
+                    page = page,
+                    query = query,
+                    pageSize = pageSize
+                )
 
-            // Insert into the cache
-            gameDao.insertGames(games = entityMapper.toEntityList(games))
+                // Insert into the cache
+                gameDao.insertGames(games = entityMapper.toEntityList(games))
+            }
 
             // Query the cache
             val cacheResult = if (query.isBlank()) {
