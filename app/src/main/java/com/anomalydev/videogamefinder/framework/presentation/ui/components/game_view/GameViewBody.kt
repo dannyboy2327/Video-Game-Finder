@@ -29,6 +29,7 @@ import com.anomalydev.videogamefinder.util.Constants.TAG
 fun GameImageBody(
     game: Game,
     onTriggerFavorite: (Game) -> Unit,
+    onShareGame: (String, String) -> Unit,
 ) {
 
     val expanded = remember { mutableStateOf(false) }
@@ -154,7 +155,9 @@ fun GameImageBody(
         }
 
         Button(
-            onClick = { },
+            onClick = {
+                onShareGame(game.name, game.website)
+            },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.background,
             ),
