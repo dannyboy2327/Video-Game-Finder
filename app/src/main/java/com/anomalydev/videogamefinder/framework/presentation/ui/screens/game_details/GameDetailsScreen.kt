@@ -16,7 +16,9 @@ fun GameDetailsScreen(
     isNetworkAvailable: Boolean,
     viewModel: GameDetailsViewModel,
     gameId: Int?,
-) {
+    onWebsiteClick: (String) -> Unit,
+    onShareClick: (String, String) -> Unit,
+    ) {
     if (gameId == null) {
         //TODO("Show Invalid Recipe")
     } else {
@@ -53,7 +55,9 @@ fun GameDetailsScreen(
                             game = game,
                             onTriggerFavorite = {
                                 viewModel.onTriggerEvent(GameDetailsEvents.BookmarkStateEvent(it))
-                            }
+                            },
+                            onWebsiteClick = onWebsiteClick,
+                            onShareClick = onShareClick,
                         )
                     }
                 }

@@ -1,8 +1,12 @@
 package com.anomalydev.videogamefinder.framework.presentation
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +29,7 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_lis
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.splash.SplashScreen
+import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
 import com.anomalydev.videogamefinder.framework.presentation.util.ConnectivityManager
 import com.anomalydev.videogamefinder.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +91,10 @@ class MainActivity : ComponentActivity() {
 
                 composable("gameList") { navBackStackEntry ->
                     val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-                    val gameListViewModel: GameListViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameListViewModel", factory)
+                    val gameListViewModel: GameListViewModel = viewModel(
+                        LocalViewModelStoreOwner.current!!,
+                        "GameListViewModel", factory
+                    )
                     GameListScreen(
                         isDarkTheme = isDark.value,
                         isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
@@ -101,12 +109,21 @@ class MainActivity : ComponentActivity() {
                     arguments = listOf(navArgument("gameId") { type = NavType.IntType})
                 ) { navBackStackEntry ->
                     val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
-                    val gameDetailsViewModel: GameDetailsViewModel = viewModel(LocalViewModelStoreOwner.current!!, "GameDetailsViewModel", factory)
+                    val gameDetailsViewModel: GameDetailsViewModel = viewModel(
+                        LocalViewModelStoreOwner.current!!,
+                        "GameDetailsViewModel", factory
+                    )
                     GameDetailsScreen(
                         isDarkTheme = isDark.value,
                         isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
                         viewModel = gameDetailsViewModel,
                         gameId = navBackStackEntry.arguments?.getInt("gameId"),
+                        onWebsiteClick = { url ->
+                            openGameWebsite(url)
+                        },
+                        onShareClick = { name, url ->
+                            shareGame(name, url)
+                        }
                     )
                 }
 
@@ -118,6 +135,41 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
+        }
+    }
+
+    /**
+     * Responsible for starting an intent to share a url
+     */
+    private fun shareGame(name: String, url: String) {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Hey! Found a game that I'd like to share! It's called $name. " +
+                        "Here's the link $url."
+            )
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    /**
+     *  Responsible for starting an intent to open up a web url
+     */
+    private fun openGameWebsite(url: String) {
+        val webPage: Uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webPage)
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            val dialogQueue = DialogQueue()
+            dialogQueue.appendErrorMessage(
+                title = e.cause.toString(),
+                description = e.message.toString(),
+            )
         }
     }
 

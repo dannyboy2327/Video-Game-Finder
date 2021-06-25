@@ -12,6 +12,8 @@ import com.anomalydev.videogamefinder.business.domain.model.Game
 fun GameView(
     game: Game,
     onTriggerFavorite: (Game) -> Unit,
+    onWebsiteClick: (String) -> Unit,
+    onShareClick: (String, String) -> Unit,
 ) {
 
     Column(
@@ -26,7 +28,8 @@ fun GameView(
 
         GameImageBody(
             game = game,
-            onTriggerFavorite = onTriggerFavorite
+            onTriggerFavorite = onTriggerFavorite,
+            onShareGame = onShareClick,
         )
 
         Divider(
@@ -54,6 +57,7 @@ fun GameView(
 
         GameViewWebsite(
             website = game.website,
+            onWebsiteClick = onWebsiteClick
         )
 
         Divider(
