@@ -1,7 +1,9 @@
 package com.anomalydev.videogamefinder.framework.datasource.network.abstraction
 
 import com.anomalydev.videogamefinder.framework.datasource.network.model.GameDto
+import com.anomalydev.videogamefinder.framework.datasource.network.model.GameTrailersDto
 import com.anomalydev.videogamefinder.framework.datasource.network.response.GameSearchResponse
+import com.anomalydev.videogamefinder.framework.datasource.network.response.GameTrailersResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -22,4 +24,10 @@ interface GameService {
         @Path("gameId") gameId: Int,
         @Query("key") key: String,
     ): GameDto
+
+    @GET("games/{gameId}/movies")
+    suspend fun getGameTrailers(
+        @Path("gameId") gameId: Int,
+        @Query("key") key: String,
+    ): GameTrailersResponse
 }
