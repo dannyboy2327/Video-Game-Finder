@@ -10,5 +10,7 @@ sealed class Screen(
 
     object GameDetails: Screen("gameDetails")
 
+    object GameTrailers: Screen("gameTrailers")
+
     object Settings: Screen("settings")
 }
