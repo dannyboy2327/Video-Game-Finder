@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +26,8 @@ import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_det
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_details.GameDetailsViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_list.GameListViewModel
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_trailers.GameTrailersScreen
+import com.anomalydev.videogamefinder.framework.presentation.ui.screens.game_trailers.GameTrailersViewModel
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.settings.Settings
 import com.anomalydev.videogamefinder.framework.presentation.ui.screens.splash.SplashScreen
 import com.anomalydev.videogamefinder.framework.presentation.ui.util.DialogQueue
@@ -123,7 +124,25 @@ class MainActivity : ComponentActivity() {
                         },
                         onShareClick = { name, url ->
                             shareGame(name, url)
-                        }
+                        },
+                        onNavigateToGameTrailersScreen = navController::navigate
+                    )
+                }
+
+                composable(
+                    "gameTrailers/{gameId}",
+                    arguments = listOf(navArgument("gameId") {type = NavType.IntType})
+                ) { navBackStackEntry ->
+                    val factory = HiltViewModelFactory(LocalContext.current, navBackStackEntry)
+                    val gameTrailersViewModel: GameTrailersViewModel = viewModel(
+                        LocalViewModelStoreOwner.current!!,
+                        "GameTrailersViewModel", factory
+                    )
+                    GameTrailersScreen(
+                        isDarkTheme = isDark.value,
+                        isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+                        viewModel = gameTrailersViewModel,
+                        gameId = navBackStackEntry.arguments?.getInt("gameId"),
                     )
                 }
 
