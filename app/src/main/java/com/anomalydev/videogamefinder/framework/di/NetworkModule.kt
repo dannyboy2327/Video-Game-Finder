@@ -3,6 +3,7 @@ package com.anomalydev.videogamefinder.framework.di
 import com.anomalydev.videogamefinder.BuildConfig
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
+import com.anomalydev.videogamefinder.framework.datasource.network.util.GameTrailerDtoMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -38,5 +39,11 @@ object NetworkModule {
     @Provides
     fun provideDtoMapper(): GameDtoMapper {
         return GameDtoMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideDtoTrailerMapper(): GameTrailerDtoMapper {
+        return GameTrailerDtoMapper()
     }
 }
