@@ -20,7 +20,7 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE id IN (:id)")
     suspend fun getGameById(id: Int): GameEntity?
 
-    // Will delete a list a games by their id's
+    // Will delete a list of games by their id's
     @Query("DELETE FROM games WHERE id IN (:ids)")
     suspend fun deleteGames(ids: List<Int>): Int
 

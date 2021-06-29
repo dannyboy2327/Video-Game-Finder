@@ -18,6 +18,7 @@ fun GameDetailsScreen(
     gameId: Int?,
     onWebsiteClick: (String) -> Unit,
     onShareClick: (String, String) -> Unit,
+    onNavigateToGameTrailersScreen: (String) -> Unit,
     ) {
     if (gameId == null) {
         //TODO("Show Invalid Recipe")
@@ -58,6 +59,7 @@ fun GameDetailsScreen(
                             },
                             onWebsiteClick = onWebsiteClick,
                             onShareClick = onShareClick,
+                            onNavigateToGameTrailersScreen = onNavigateToGameTrailersScreen,
                         )
                     }
                 }

@@ -14,6 +14,7 @@ fun GameView(
     onTriggerFavorite: (Game) -> Unit,
     onWebsiteClick: (String) -> Unit,
     onShareClick: (String, String) -> Unit,
+    onNavigateToGameTrailersScreen: (String) -> Unit,
 ) {
 
     Column(
@@ -30,6 +31,7 @@ fun GameView(
             game = game,
             onTriggerFavorite = onTriggerFavorite,
             onShareGame = onShareClick,
+            onNavigateToGameTrailersScreen = onNavigateToGameTrailersScreen,
         )
 
         Divider(
