@@ -5,17 +5,17 @@ import com.anomalydev.videogamefinder.business.interactors.game.GetGame
 import com.anomalydev.videogamefinder.business.interactors.game_list.GetFavoriteGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.RestoreGames
 import com.anomalydev.videogamefinder.business.interactors.game_list.SearchGames
+import com.anomalydev.videogamefinder.business.interactors.game_trailers.GetGameTrailers
 import com.anomalydev.videogamefinder.framework.datasource.cache.database.GameDao
 import com.anomalydev.videogamefinder.framework.datasource.cache.util.GameEntityMapper
 import com.anomalydev.videogamefinder.framework.datasource.network.abstraction.GameService
 import com.anomalydev.videogamefinder.framework.datasource.network.util.GameDtoMapper
+import com.anomalydev.videogamefinder.framework.datasource.network.util.GameTrailerDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -86,6 +86,18 @@ object InteractorsModule {
         return BookmarkState(
             gameDao = gameDao,
             entityMapper = entityMapper,
+        )
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetGameTrailers(
+        gameService: GameService,
+        dtoMapper: GameTrailerDtoMapper,
+    ): GetGameTrailers {
+        return GetGameTrailers(
+            gameService = gameService,
+            dtoMapper = dtoMapper,
         )
     }
 }
