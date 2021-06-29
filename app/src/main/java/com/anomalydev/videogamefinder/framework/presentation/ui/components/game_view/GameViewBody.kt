@@ -1,6 +1,5 @@
 package com.anomalydev.videogamefinder.framework.presentation.ui.components.game_view
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.BookmarkRemove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -23,19 +21,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.anomalydev.videogamefinder.business.domain.model.Game
-import com.anomalydev.videogamefinder.util.Constants.TAG
+import com.anomalydev.videogamefinder.framework.presentation.ui.navigation.Screen
 
 @Composable
 fun GameImageBody(
     game: Game,
     onTriggerFavorite: (Game) -> Unit,
     onShareGame: (String, String) -> Unit,
+    onNavigateToGameTrailersScreen: (String) -> Unit,
 ) {
 
     val expanded = remember { mutableStateOf(false) }
 
     Button(
-        onClick = { },
+        onClick = {
+            val route = Screen.GameTrailers.route + "/${game.id}"
+            onNavigateToGameTrailersScreen(route)
+        },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color.Red,
         ),
@@ -58,7 +60,7 @@ fun GameImageBody(
         )
 
         Text(
-            text = "Play",
+            text = "Play Trailers",
             color = MaterialTheme.colors.onPrimary,
             style = MaterialTheme.typography.button,
             fontSize = 16.sp,
