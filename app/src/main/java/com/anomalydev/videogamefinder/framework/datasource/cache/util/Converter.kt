@@ -11,9 +11,9 @@ import java.lang.reflect.Type
 class Converter {
 
     @TypeConverter
-    fun ratingsToString(rating: List<Rating>): String {
+    fun ratingsToString(ratings: List<Rating>): String {
         val gson = Gson()
-        return gson.toJson(rating)
+        return gson.toJson(ratings)
     }
 
     @TypeConverter
